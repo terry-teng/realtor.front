@@ -2897,64 +2897,64 @@ Vue.component('realand-realtor-detail', {
     template : `
     <div>
     <realand-menu-simple></realand-menu-simple>
-<section class="single agents-single">
-  <div class="container">
-    <ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border ht-breadcrumbs--b-margin">
-      <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
-      <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Agent</span></a></li>
-      <li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Agent Single</span></li>
-    </ul><!-- ht-breadcrumb -->
+    <section class="single agents-single">
+    <div class="container">
+        <ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border ht-breadcrumbs--b-margin">
+        <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
+        <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Agent</span></a></li>
+        <li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Agent Single</span></li>
+        </ul><!-- ht-breadcrumb -->
 
-    <div class="single__wrapper agents-single__wrapper">
-      <div class="row">
-        <div class="col-md-9">
-          <div class="single__inner agents-single__inner">
-            <div class="single__avatar agents-single__avatar">
-              <img src="images/uploads/michael_beckle.jpg" alt="Michael Beckle">
-            </div><!-- .agents-single__avatar -->
+        <div class="single__wrapper agents-single__wrapper">
+        <div class="row">
+            <div class="col-md-9">
+            <div class="single__inner agents-single__inner">
+                <div class="single__avatar agents-single__avatar">
+                <img src="images/uploads/michael_beckle.jpg" alt="Michael Beckle">
+                </div><!-- .agents-single__avatar -->
 
-            <div class="single__detail agents-single__detail">
-              <h3 class="agents-single__name">{{realtor.lastName}} {{realtor.firstName}}</h3>
-              <span class="famous-agents__position">{{realtor.title}} | Realand®</span>
-              <ul class="famous-agents__contact agents-single__contact">
-                <li class="famous-agents__phone"><i class="fa fa-phone fa-fw" aria-hidden="true"></i><a href="tel:+3104326507">{{realtor.officePhone}}</a></li>
-                <li class="famous-agents__email"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i><a v-bind:href="'mailto:'+realtor.email">{{realtor.email}}</a></li>
-              </ul>
-              <ul class="agency__social agents-single__social">
-                <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-              </ul>
-              <p class="agents-single__desc">
-                {{realtor.description}}
-              </p>
-            </div><!-- .agents-single__detail -->
-          </div><!-- agents-single__inner -->
-        </div><!-- .col -->
+                <div class="single__detail agents-single__detail">
+                <h3 class="agents-single__name">{{realtor.lastName}} {{realtor.firstName}}</h3>
+                <span class="famous-agents__position">{{realtor.title}} | Realand®</span>
+                <ul class="famous-agents__contact agents-single__contact">
+                    <li class="famous-agents__phone"><i class="fa fa-phone fa-fw" aria-hidden="true"></i><a href="tel:+3104326507">{{realtor.officePhone}}</a></li>
+                    <li class="famous-agents__email"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i><a v-bind:href="'mailto:'+realtor.email">{{realtor.email}}</a></li>
+                </ul>
+                <ul class="agency__social agents-single__social">
+                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                </ul>
+                <p class="agents-single__desc">
+                    {{realtor.description}}
+                </p>
+                </div><!-- .agents-single__detail -->
+            </div><!-- agents-single__inner -->
+            </div><!-- .col -->
 
-        <div class="col-md-3">
-          <form class="contact-form contact-form--bordered agents-single__contact-from">
-            <div class="contact-form__header">
-              <h3 class="contact-form__title">Contact {{realtor.lastName}} {{realtor.firstName}}</h3>
-            </div><!-- .contact-form__header -->
-            <div class="contact-form__body">
-              <input type="text" class="contact-form__field" placeholder="Name" name="name" required>
-              <input type="email" class="contact-form__field" placeholder="Email" name="email" required>
-              <input type="tel" class="contact-form__field" placeholder="Phone number" name="phone number">
-              <textarea class="contact-form__field contact-form__comment" cols="30" rows="4" placeholder="Comment" name="comment" required></textarea>
-              
-            </div><!-- .contact-form__body -->
-            <div class="contact-form__footer">
-              <input type="submit" class="contact-form__submit" name="submit" value="Contact Agent">
-            </div><!-- .contact-form__footer -->
-          </form><!-- .contact-form -->
-        </div><!-- .col -->
-      </div><!-- .row -->
-    </div><!-- .agents-single__wrapper -->
-  </div><!-- .container -->
-</section><!-- .agents-single -->
-</div>
+            <div class="col-md-3">
+            <form class="contact-form contact-form--bordered agents-single__contact-from">
+                <div class="contact-form__header">
+                <h3 class="contact-form__title">Contact {{realtor.lastName}} {{realtor.firstName}}</h3>
+                </div><!-- .contact-form__header -->
+                <div class="contact-form__body">
+                <input type="text" class="contact-form__field" placeholder="Name" name="name" required>
+                <input type="email" class="contact-form__field" placeholder="Email" name="email" required>
+                <input type="tel" class="contact-form__field" placeholder="Phone number" name="phone number">
+                <textarea class="contact-form__field contact-form__comment" cols="30" rows="4" placeholder="Comment" name="comment" required></textarea>
+                
+                </div><!-- .contact-form__body -->
+                <div class="contact-form__footer">
+                <input type="submit" class="contact-form__submit" name="submit" value="Contact Agent">
+                </div><!-- .contact-form__footer -->
+            </form><!-- .contact-form -->
+            </div><!-- .col -->
+        </div><!-- .row -->
+        </div><!-- .agents-single__wrapper -->
+    </div><!-- .container -->
+    </section><!-- .agents-single -->
+    </div>
     `
 })
 
