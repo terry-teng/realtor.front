@@ -1,5 +1,26 @@
 $.support.cors = true;
 
+Vue.component('realand-root',{
+    data : function(){
+        return {
+            loadCompanyUrl : "http://localhost:8080/api/company/1",
+            company : {}
+        }
+    },
+    created : function(){
+        var self  = this;
+        $.ajax({
+            url : this.loadCompanyUrl,
+            dataType:"json",
+            success : function(response){
+                console.log("------------ + : "+ JSON.stringify(this));
+                self.company = response;
+            }
+        }); 
+    },
+    template : '#realand-root-template'
+})
+
 Vue.component('realand-topbar',{
     data:function (){
         return{
@@ -22,18 +43,7 @@ Vue.component('realand-topbar',{
     },
     */
     
-    template : `
-    <div  class="topbar">
-        <ul class="topbar__contact">
-        <li><span class="ion-ios-telephone-outline topbar__icon"></span><a href="tel:8801234567" class="topbar__link">{{support.phone}}</a></li>
-        <li><span class="ion-ios-email-outline topbar__icon"></span><a href="mailto:ReaLand@support.com" class="topbar__link">{{support.email}}</a></li>
-        </ul><!-- .topbar__contact -->
-        <ul class="topbar__user">
-            <span class="ion-ios-person-outline topbar__user-icon"></span>
-            <li><a href="sign_up.html" class="topbar__link">Sign In</a></li>
-        </ul>
-    </div><!-- .topbar -->
-    `
+    template : '#realand-topbar-template'
 });
 
 Vue.component('realand-menu',{
@@ -147,7 +157,7 @@ Vue.component('realand-menu',{
                                     label : "About Us"
                                 },
                                 {
-                                    link : "contact.html",
+                                    link : "contactUs",
                                     label : "Contact"
                                 },
                                 {
@@ -193,57 +203,7 @@ Vue.component('realand-menu',{
         }
     },
 
-    template : `
-    <header class="header header--blue header--top">
-	<div class="container">
-    <realand-topbar></realand-topbar>
-    <div class="header__main">
-			<div class="header__logo">
-				<a href="index.html">
-					<h1 class="screen-reader-text">{{header.brand}}</h1>
-					<img src="images/uploads/logo.png" alt="Realand">
-				</a>
-			</div><!-- .header__main -->
-
-			<div class="nav-mobile">
-				<a href="#" class="nav-toggle">
-					<span></span>
-				</a><!-- .nav-toggle -->
-			</div><!-- .nav-mobile -->
-
-			<div class="header__menu header__menu--v1">
-				<ul class="header__nav">
-
-        <li v-for="item in header.menu.list" class="header__nav-item" v-bind:data-page="item.link" >
-            <a href="#" class="header__nav-link">{{item.label}}</a>
-            <template v-if="item.list">
-            <ul>
-                <li v-for="subitem in item.list" class="page-link" v-bind:data-page="subitem.link" >
-                    <a href="#">{{subitem.label}}</a>
-                        <template v-if="subitem.list">
-                        <ul>
-                            <li v-for="subsubitem in subitem.list" class="page-link" v-bind:data-page="subsubitem.link"><a href="#">{{subsubitem.label}}</a></li>
-                        </ul>
-                        </template>
-                </li>
-            </ul>
-            </template>
-        </li>
-
-        </ul><!-- .header__nav -->
-
-        <ul class="topbar__user">
-            <li><a href="sign_up.html" class="topbar__link">Sign In</a></li>
-            <li><a href="sign_up.html" class="topbar__link">Join</a></li>
-        </ul>
-
-    </div><!-- .header__menu -->
-
-    <a href="submit_property.html" class="header__cta">&plus; Submit Property</a>
-    </div><!-- .header__main -->
-    </div><!-- .container -->
-</header><!-- .header -->
-    `
+    template : '#realand-menu-template'
 });
 
 Vue.component('realand-main-search',{
@@ -547,63 +507,7 @@ Vue.component('realand-main-search',{
         }
     },
 
-    template : `
-    <section class="main-search main-search--absolute">
-    <div class="container">
-    <div class="main-search__container">  
-    <section class="listing-search">
-        <form action="index.html" method="get" class="listing-search__form">
-            <div class="row">
-                <div v-for="dropdown in searchCriteria.basic" class="col-sm-3">
-                    <label v-bind:for="dropdown.select.name" class="listing-search__label">{{dropdown.label}}</label>
-                    <select v-bind:name="dropdown.select.name" v-bind:id="dropdown.select.name" class="ht-field">
-                        <option v-for="option in dropdown.options" v-bind:value="option.value">{{option.label}}</option>
-                    </select>
-                </div>
-                <div class="col-sm-3">
-                    <label for="listing-btn" class="listing-search__label listing-search__label--hidden">Submit</label>
-                    <a href="#" id="listing-btn" class="listing-search__btn">Submit</a>
-                </div><!-- .col -->
-                <div class="col-sm-3">
-                    <label for="listing-btn" class="listing-search__label listing-search__label--hidden">Advanced Search</label>
-                    <a href="#" id="listing-btn" class="listing-search__btn">Advanced Search</a>
-                </div><!-- .col -->
-            </div><!-- row -->
-
-            <div class="listing-search__advance">
-                <div class="row">
-                    <div v-for="dropdown in searchCriteria.advanceDropdowns" class="col-sm-3">
-                        <label v-bind:for="dropdown.select.name" class="listing-search__label">{{dropdown.label}}</label>
-                        <select v-bind:name="dropdown.select.name" v-bind:id="dropdown.select.name" class="ht-field">
-                            <option v-for="option in dropdown.options" v-bind:value="option.value">{{option.label}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="listing-search__more">
-                    <a class="listing-search__more-btn" href="#">Additional Features</a>
-                    <div class="listing-search__more-inner">
-                        <div class="row">
-                            <div v-for="i in Math.ceil(searchCriteria.checkboxes.length/3)"  class="col-sm-6 col-md-3">
-                                <div v-for="checkbox in searchCriteria.checkboxes.slice((i-1)*3, i*3)" class="listing-search__more-wrapper">
-                                    <input type="checkbox" v-bind:name="checkbox.name" v-bind:id="'checkbox-'+checkbox.name" class="listing-search__more-field">
-                                    <label v-bind:for="checkbox.name" class="listing-search__more-label">{{checkbox.label}} ({{checkbox.count}})</label>
-                                </div>
-                            </div>
-                        </div><!-- .row -->
-                    </div><!-- .listing-search__more-inner -->
-                </div><!-- .listing-search__more -->
-            </div><!-- .listing-search__advance -->
-        </form><!-- .listing-search__form -->
-    </section><!-- .listing-search -->
-
-    <realand-main-search-sort></realand-main-search-sort>
-
-    </div><!-- .main-search__container -->
-    </div><!-- .container -->
-    </section><!-- .listing-search -->
-
-    
-    `
+    template :'#realand-main-search-template'
 });
 
 Vue.component('realand-main-search-sort', {
@@ -634,26 +538,7 @@ Vue.component('realand-main-search-sort', {
         }
     },
 
-    template : `
-
-    <section class="listing-sort">
-		<div class="listing-sort__inner">
-            <ul class="listing-sort__list">
-                <li class="listing-sort__item"><a href="#" class="listing-sort__link"><i class="fa fa-th-list listing-sort__icon" aria-hidden="true"></i></a></li>
-                <li class="listing-sort__item"><a href="#" class="listing-sort__link"><i class="fa fa-th listing-sort__icon" aria-hidden="true"></i></a></li>
-                <li class="listing-sort__item"><a href="#" class="listing-sort__link listing-sort__link--active "><i class="fa fa-th-large listing-sort__icon" aria-hidden="true"></i></a></li>
-            </ul>
-
-            <span class="listing-sort__result">1-9 of {{sortby.result}} results</span>
-            <p class="listing-sort__sort">
-                <label for="sort-type" class="listing-sort__label"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> Sort by </label>
-                <select name="sort-type" id="sort-type" class="ht-field listing-sort__field">
-                    <option v-for="option in sortby.options" v-bind:value="option.value">{{option.label}}</option>
-                </select>
-            </p>
-        </div><!-- .listing-sort__inner -->
-	</section><!-- .listing-sort -->
-    `
+    template : '#realand-main-search-sort-template'
 });
 
 Vue.component('realand-main-slider',{
@@ -708,76 +593,7 @@ Vue.component('realand-main-slider',{
         }
     },
 
-    template : `
-    <section class="main-slider">
-	<div id="rev_slider_1_1_wrapper" class="rev_slider_wrapper fullwidthbanner-container" data-alias="realand-slider-1" data-source="gallery" style="margin:0px auto;background:rgba(0,0,0,0.5);padding:0px;margin-top:0px;margin-bottom:0px;">
-		<!-- START REVOLUTION SLIDER 5.4.6 fullwidth mode -->
-		<div id="rev_slider_1_1" class="rev_slider fullwidthabanner" style="display:none;" data-version="5.4.6">
-			<ul>
-        <!-- SLIDE  -->
-        <li v-for="(item, index) in slides" v-bind:data-index="index" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="images/revslider/main_slider_1-2-100x50.jpeg" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8="" data-param9="" data-param10="" data-description="">
-        <!-- MAIN IMAGE -->
-        <img src="images/dummy.png" alt="" title="Main Slider 1-2" width="1920" height="820" v-bind:data-lazyload="item.src" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" data-no-retina>
-        <!-- LAYERS -->
-
-        <!-- LAYER NR. 1 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-1" data-x="['left','left','left','center']" data-hoffset="['100','100','100','0']" data-y="['top','top','top','bottom']" data-voffset="['375','375','375','200']" data-width="['425','425','370','370']" data-height="['190','190','170','170']" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":500,"speed":1000,"frame":"0","from":"x:left;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 5; min-width: 425px; max-width: 425px; max-width: 190px; max-width: 190px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;background-color:rgb(255,255,255);">
-            <!-- LAYER NR. 2 -->
-            <h2 class="tp-caption   tp-resizeme" id="slide-6-layer-2" data-x="['left','left','left','left']" data-hoffset="['30','30','20','20']" data-y="['top','top','top','top']" data-voffset="['30','30','30','30']" data-fontsize="['32','32','28','28']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 6; white-space: nowrap; font-size: 32px; line-height: 22px; font-weight: 700; color: #333333; letter-spacing: 0px;font-family:Open Sans;">{{item.house.title}}</h2>
-
-            <!-- LAYER NR. 3 -->
-            <div class="tp-caption   tp-resizeme" id="slide-6-layer-4" data-x="['left','left','left','left']" data-hoffset="['30','30','20','20']" data-y="['top','top','top','top']" data-voffset="['70','70','60','60']" data-fontsize="['16','16','14','14']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 7; white-space: nowrap; font-size: 16px; line-height: 22px; font-weight: 400; color: #666666; letter-spacing: 0px;font-family:Roboto;">{{item.house.address}}</div>
-        </div>
-
-        <!-- LAYER NR. 4 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-5" data-x="['left','left','left','left']" data-hoffset="['130','130','120','75']" data-y="['top','top','top','top']" data-voffset="['490','490','475','230']" data-width="34" data-height="45" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":1000,"speed":1000,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 8; min-width: 34px; max-width: 34px; max-width: 45px; max-width: 45px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-            <!-- LAYER NR. 5 -->
-            <span class="tp-caption   tp-resizeme" id="slide-6-layer-6" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['top','top','top','top']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 9; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;">{{item.house.internal[0].quantity}}</span>
-
-            <!-- LAYER NR. 6 -->
-            <span class="tp-caption   tp-resizeme" id="slide-6-layer-8" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['bottom','bottom','bottom','bottom']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 10; white-space: nowrap; font-size: 12px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;">{{item.house.internal[0].unit}}</span>
-        </div>
-
-        <!-- LAYER NR. 7 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-12" data-x="['left','left','left','left']" data-hoffset="['255','255','245','180']" data-y="['top','top','top','top']" data-voffset="['490','490','475','230']" data-width="45" data-height="45" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":800,"speed":1000,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 11; min-width: 45px; max-width: 45px; max-width: 45px; max-width: 45px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-            <!-- LAYER NR. 8 -->
-            <div class="tp-caption   tp-resizeme" id="slide-6-layer-28" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['top','top','top','top']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 12; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;">{{item.house.internal[1].quantity}}</div>
-
-            <!-- LAYER NR. 9 -->
-            <div class="tp-caption   tp-resizeme" id="slide-6-layer-30" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['bottom','bottom','bottom','bottom']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 13; white-space: nowrap; font-size: 12px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;">{{item.house.internal[1].unit}}</div>
-        </div>
-
-        <!-- LAYER NR. 10 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-20" data-x="['left','left','left','left']" data-hoffset="['190','190','180','125']" data-y="['top','top','top','top']" data-voffset="['490','490','475','230']" data-width="40" data-height="45" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":800,"speed":1010,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 14; min-width: 40px; max-width: 40px; max-width: 45px; max-width: 45px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;">
-            <!-- LAYER NR. 11 -->
-            <span class="tp-caption   tp-resizeme" id="slide-6-layer-21" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['top','top','top','top']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 15; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;"> {{item.house.internal[2].quantity}}</span>
-
-            <!-- LAYER NR. 12 -->
-            <span class="tp-caption   tp-resizeme" id="slide-6-layer-24" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['bottom','bottom','bottom','bottom']" data-voffset="['0','0','0','0']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 16; white-space: nowrap; font-size: 12px; line-height: 22px; font-weight: 400; color: #333333; letter-spacing: 0px;font-family:Roboto;">{{item.house.internal[2].unit}}</span>
-        </div>
-
-        <!-- LAYER NR. 13 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-31" data-x="['left','left','left','left']" data-hoffset="['525','525','470','56']" data-y="['top','top','top','top']" data-voffset="['375','375','375','300']" data-width="['245','245','245','185']" data-height="['135','135','125','45']" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":500,"speed":1000,"frame":"0","from":"x:50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 17; min-width: 245px; max-width: 245px; max-width: 135px; max-width: 135px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;background-color:rgb(34,53,91);">
-            <!-- LAYER NR. 14 -->
-            <h3 class="tp-caption   tp-resizeme" id="slide-6-layer-32" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-fontsize="['24','24','24','20']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 18; white-space: nowrap; font-size: 24px; line-height: 22px; font-weight: 900; color: #ffffff; letter-spacing: 0px;font-family:Roboto;">{{item.house.price}}</h3>
-        </div>
-
-        <!-- LAYER NR. 15 -->
-        <div class="tp-caption     rev_group" id="slide-6-layer-33" data-x="['left','left','left','left']" data-hoffset="['525','525','470','240']" data-y="['top','top','top','top']" data-voffset="['510','510','500','300']" data-width="['245','245','245','185']" data-height="['55','55','45','45']" data-whitespace="nowrap" data-type="group" data-responsive_offset="on" data-frames='[{"delay":500,"speed":1000,"frame":"0","from":"y:50px;opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 19; min-width: 245px; max-width: 245px; max-width: 55px; max-width: 55px; white-space: nowrap; font-size: 20px; line-height: 22px; font-weight: 400; color: #ffffff; letter-spacing: 0px;background-color:rgb(31,195,65);">
-            <!-- LAYER NR. 16 -->
-            <a class="tp-caption   tp-resizeme" href="#" target="_self" id="slide-6-layer-34" data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" data-fontsize="['16','16','16','15']" data-width="none" data-height="none" data-whitespace="nowrap" data-type="text" data-actions='' data-responsive_offset="on" data-frames='[{"delay":"+0","speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"Power3.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]' data-margintop="[0,0,0,0]" data-marginright="[0,0,0,0]" data-marginbottom="[0,0,0,0]" data-marginleft="[0,0,0,0]" data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]" data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]" data-paddingleft="[0,0,0,0]" style="z-index: 20; white-space: nowrap; font-size: 16px; line-height: 22px; font-weight: 700; color: #ffffff; letter-spacing: 0px;font-family:Roboto;text-decoration: none;">VIEW DETAIL </a>
-        </div>
-        </li>
-    </ul>
-			<div class="tp-bannertimer tp-bottom" style="visibility: hidden !important;"></div>
-		</div>
-    </div>
-    <!-- END REVOLUTION SLIDER -->
-
-    <realand-main-search></realand-main-search>
-
-    </section><!-- .main-slider -->
-    `
+    template : '#realand-main-slider-template'
 });
 
 Vue.component('realand-property-summary',{
@@ -943,39 +759,7 @@ Vue.component('realand-property-summary',{
         }
     },
 
-    template : `
-    <div class="row">
-        <div v-for="property in properties" class="col-md-6 item-grid__container">
-        <div class="listing">
-        <div class="item-grid__image-container">
-            <a v-bind:href="property.link">
-            <div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-            <img v-bind:src="property.thumbnail" v-bind:alt="property.alt" class="listing__img">
-            <span class="listing__favorite"><i class="fa fa-heart-o" v-bind:aria-hidden="property.favorate"></i></span>
-            </a>
-        </div><!-- .item-grid__image-container -->
-
-        <div class="item-grid__content-container">
-            <div class="listing__content">
-            <div class="listing__header">
-                <div class="listing__header-primary">
-                <h3 class="listing__title"><a v-bind:href="property.link">{{property.label}}</a></h3>
-                <p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{property.house.address}}</p>
-                </div><!-- .listing__header-primary -->
-                <p class="listing__price">{{property.house.price}}</p>
-            </div><!-- .listing__header -->
-            <div class="listing__details">
-                <ul class="listing__stats">
-                <li v-for="item in property.house.internal"><span class="listing__figure">{{item.quantity}}</span> {{item.unit}}</li>
-                </ul><!-- .listing__stats -->
-                <a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="false"></i></span></a>
-            </div><!-- .listing__details -->
-            </div><!-- .listing-content -->
-            </div><!-- .item-grid__content-container -->
-            </div><!-- .listing -->
-        </div><!-- .col -->
-  </div><!-- .row -->
-    `
+    template :'#realand-property-summary-template'
 });
 
 Vue.component('realand-main-banner',{
@@ -1006,25 +790,7 @@ Vue.component('realand-main-banner',{
         }
     },
 
-    template : `
-    <section class="features">
-    <div class="features__overlay">
-    <div class="container">
-    <div class="row">
-    <div v-for="item in items" class="col-sm-4">
-        <div class="feature">
-        <img v-bind:src="item.src" v-bind:alt="item.alt" class="feature__icon">
-        <h3 class="feature__title">{{item.title}}</h3>
-        <p class="feature__desc">
-        {{item.description}}
-        </p>
-        </div><!-- .feature -->
-    </div><!-- .col -->
-    </div><!-- .row -->
-    </div><!-- .container -->
-    </div><!-- .features__overlay -->
-    </section><!-- .features -->
-    `
+    template :'#realand-main-banner-template'
 });
 
 Vue.component('realand-feature-listing', {
@@ -1112,40 +878,7 @@ Vue.component('realand-feature-listing', {
         }
     },
 
-    template : `
-    <section class="featured-listing">
-    <div class="container">
-      <h2 class="section__title">Featured Listing</h2>
-      <div class="row">
-        <div v-for="property in properties" class="col-md-4 featured-listing__container">
-          <div class="listing">
-            <div class="item-grid__image-container">
-              <a v-bind:href="property.link">
-                <div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-                <img v-bind:src="property.thumbnail" v-bind:alt="property.alt" class="listing__img">
-                <span class="listing__favorite"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
-              </a>
-            </div><!-- item-grid__image-container -->
-  
-            <div class="item-grid__content-container">
-              <div class="listing__content">
-                <h3 class="listing__title"><a v-bind:href="property.link">{{property.label}}</a></h3>
-                <p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span> {{property.house.address}}</p>
-                <p class="listing__price">{{property.price}}</p>
-                <div class="listing__details">
-                  <ul class="listing__stats">
-                    <li v-for="item in property.house.internal"><span class="listing__figure">{{item.quantity}}</span>{{item.unit}}</li>
-                  </ul><!-- .listing__stats -->
-                  <a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
-                </div><!-- .listing__details -->
-              </div><!-- .listing-content -->
-            </div><!-- .item-grid__content-container -->
-          </div><!-- .listing -->
-        </div><!-- .col -->
-        </div><!-- .row -->
-        </div><!-- .container -->
-      </section><!-- .featured-listing -->
-    `
+    template : '#realand-feature-listing-template'
 });
 
 Vue.component('realand-newsletter',{
@@ -1164,28 +897,7 @@ Vue.component('realand-newsletter',{
         }
     },
 
-    template : `
-    <section class="newsletter">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 newsletter__content">
-          <img v-bind:src="newsletter.icon" v-bind:alt="newsletter.alt" class="newsletter__icon">
-          <div class="newsletter__text-content">
-            <h2 class="newsletter__title">{{newsletter.title}}</h2>
-            <p class="newsletter__desc">{{newsletter.description}}</p>
-          </div>
-        </div><!-- .col -->
-  
-        <div class="col-md-6">
-          <form v-bind:action="newsletter.form.action" class="newsletter__form">
-            <input type="email" class="newsletter__field" placeholder="Enter Your E-mail">
-            <button type="submit" class="newsletter__submit">{{newsletter.form.label}}</button>
-          </form>
-        </div><!-- .col -->   
-      </div><!-- .row -->
-    </div><!-- .container -->
-  </section><!-- .newsletter -->
-    `
+    template : '#realand-newsletter-template'
 });
 
 Vue.component('realand-news',{
@@ -1216,29 +928,7 @@ Vue.component('realand-news',{
         }
     },
 
-    template : `
-    <section class="news">
-    <div class="container">
-        <div class="row">
-        <div v-for="item in news" class="col-md-6">
-            <div class="news__single">
-            <div class="news__time">
-                <span class="news__date">{{item.date.day}}</span>
-                <span class="news__my">{{item.date.month}}, {{item.date.year}}</span>
-            </div><!-- .news__time -->
-
-            <div class="news__main">
-                <h3 class="news__title"><a href="blog_single.html">{{item.title}}</a></h3>
-                <span class="news__meta"><span class="ion-ios-chatboxes-outline"></span> 3 Comment(s)</span>
-                <p class="news__excerpt">{{item.description}}</p>
-                <a href="blog_single.html" class="news__readmore">&plus; Read More</a>
-            </div><!-- .news__main-->
-            </div><!-- .news__single -->
-        </div><!-- .col -->
-        </div><!-- .row -->
-    </div><!-- .container -->
-    </section><!-- .news -->
-    `
+    template : '#realand-news-template'
 });
 
 Vue.component('realand-partners',{
@@ -1269,15 +959,7 @@ Vue.component('realand-partners',{
         }
     },
 
-    template : `
-    <section class="partners">
-        <div class="container">
-            <ul class="partners__list">
-            <li v-for="partner in partners"><img v-bind:src="partner.src" alt="partner.alt"></li>
-            </ul><!-- .partners__list -->
-        </div><!-- .container -->
-    </section><!-- .partners -->
-    `
+    template :'#realand-partners-template'
 
 })
 
@@ -1330,37 +1012,7 @@ Vue.component('realand-testimonial',{
         }
     },
 
-    template : `
-    <section class="testimonial">
-        <div class="container">
-        <div class="testimonial__container testimonial--b-border">
-            <div class="testimonial--centered">
-                <h2 class="section__title section__title--large">{{testimonial.title}}</h2>
-                <img v-bind:src="testimonial.src" v-bind:alt="testimonial.alt" class="testimonial__icon">
-                <div class="testimonial__content">
-                <div class="testimonial__slider testimonial__slider--top">
-                    <p v-for="review in testimonial.reviews">
-                    {{review.content}}
-                    </p>
-                </div><!-- .testimonial__slider -->
-    
-                <ul class="testimonial__slider testimonial__list testimonial__slider--middle">
-                    <li v-for="review in testimonial.reviews"><img v-bind:src="review.avatar.src" v-bind:alt="review.avatar.alt"></li>
-                </ul><!-- .testimonial__slider --> 
-    
-                <div class="testimonial__slider testimonial__slider--bottom">
-                    <div v-for="review in testimonial.reviews" class="testimonial__slider-wrapper">
-                    <h4 class="testimonial__customer-name">{{review.name}}</h4>
-                    <p class="testimonial__customer-company">{{review.company}}</p>
-                    <img src="images/rating.png" alt="Five Stars Rating">
-                    </div><!-- .testimonial__slider-wrapper -->
-                </div><!-- .testimonial__slider -->
-                </div><!-- .testimonial__content -->
-            </div><!-- .testimonial--center --> 
-        </div><!-- .testimonial__container -->
-        </div><!-- .container -->
-    </section><!-- .testimonial -->
-    `
+    template : '#realand-testimonial-template'
 })
 
 Vue.component('realand-menu-simple',{
@@ -1474,7 +1126,7 @@ Vue.component('realand-menu-simple',{
                                 label : "About Us"
                             },
                             {
-                                link : "contact.html",
+                                link : "contact",
                                 label : "Contact"
                             },
                             {
@@ -1519,53 +1171,7 @@ Vue.component('realand-menu-simple',{
         }
         }
     },
-    template : `
-    <header class="header header--blue">
-    <div class="container">
-      <div class="header__main">
-        <div class="header__logo">
-          <a href="index.html">
-            <h1 class="screen-reader-text">{{header.brand}}</h1>
-            <img src="images/uploads/logo.png" alt="Realand">
-          </a>
-        </div><!-- .header__logo -->
-  
-        <div class="nav-mobile">
-          <a href="#" class="nav-toggle">
-            <span></span>
-          </a><!-- .nav-toggle -->
-        </div><!-- .nav-mobile -->
-  
-        <div class="header__menu header__menu--v6">
-          <ul class="header__nav">
-            <li  v-for="item in header.menu.list" class="header__nav-item" v-bind:data-page="item.link">
-              <a href="#" class="header__nav-link header__nav-link--v2">{{item.label}}</a>
-              <ul>
-                <li v-for="subitem in item.list" class="page-link" v-bind:data-page="subitem.link"><a href="#">{{subitem.label}}</a>
-                  <template v-if="subitem.list">
-                    <ul>
-                      <li v-for="subsubitem in subitem.list" class="page-link" v-bind:data-page="subsubitem.link">
-                        <a href="#">{{subsubitem.label}}</a>
-                      </li>
-                    </ul>
-                  </template>
-                </li>
-              </ul>
-            </li>
-          </ul><!-- .header__nav -->
-  
-          <ul class="topbar__user topbar__user--uppercase">
-            <li><a href="sign_up.html" class="topbar__link topbar__link--white">Sign In</a></li>
-            <li><a href="sign_up.html" class="topbar__link topbar__link--white">Join</a></li>
-          </ul>
-  
-        </div><!-- .header__menu -->
-  
-        <a href="submit_property.html" class="header__cta header__cta--outline">&plus; Submit Property</a>
-      </div><!-- .header__main -->
-    </div><!-- .container -->
-  </header><!-- .header -->
-    `
+    template : '#realand-menu-simple-template'
 });
 
 Vue.component('realand-property-header',{
@@ -1601,55 +1207,7 @@ Vue.component('realand-property-header',{
             }
         }
     },
-    template : `
-    
-    <div class="property__header">
-    <div class="container">
-        <div class="property__header-container">
-            <ul class="property__main">
-                <li class="property__title property__main-item">
-                    <div class="property__meta">
-                        <span class="property__offer">{{propertyHeader.tags[0].tag}}</span>
-                        <span class="property__type">{{propertyHeader.tags[1].tag}}</span>
-                    </div><!-- .property__meta -->
-                    <h2 class="property__name">{{propertyHeader.label}}</h2>
-                   
-                </li>
-                <li class="property__details property__main-item">
-                    <ul class="property__stats">
-                        <li v-for="item in propertyHeader.house.internal" class="property__stat"><span class="property__figure">{{item.quantity}}</span> {{item.unit}}</li>
-                    </ul><!-- .listing__stats -->
-                </li>
-                <li class="property__price property__main-item">
-                    <h4 class="property__price-primary">{{propertyHeader.house.dollarsign}}{{propertyHeader.house.price}}</h4>
-                    <span class="property__price-secondary">{{propertyHeader.house.dollarsign}}{{propertyHeader.house.priceSF}}</span>
-                </li>
-            </ul><!-- .property__main -->
-
-            <ul class="property__list">
-                <li class="property__item">
-                    <a href="#" class="property__link">
-                        <i class="fa fa-heart-o property__icon" aria-hidden="true"></i>  
-                        <span class="property__item-desc">Favorite</span>
-                    </a>
-                </li>
-                <li class="property__item">
-                    <a href="#" class="property__link">
-                        <i class="ion-ios-loop-strong property__icon"></i>
-                        <span class="property__item-desc">Compare</span>
-                    </a>
-                </li>
-                <li class="property__item">
-                    <a href="#" class="property__link">
-                        <i class="ion-android-share-alt property__icon"></i>
-                        <span class="property__item-desc">Share</span>
-                    </a>
-                </li>
-            </ul><!-- .property__list -->
-        </div><!-- .property__header-container -->
-    </div><!-- .container -->
-    </div><!-- .property__header -->
-    `
+    template :'#realand-property-header-template'
 });
 
 Vue.component('realand-property-slider',{
@@ -1700,38 +1258,7 @@ Vue.component('realand-property-slider',{
             ] 
         }
     },
-    template : `
-    <div class="property__slider">
-    <div class="container">
-      <div class="property__slider-container property__slider-container--vertical">
-        <ul class="property__slider-nav property__slider-nav--vertical">
-          <li v-for="item in sliders" class="property__slider-item">
-            <img v-bind:src="item.src" v-bind:alt="item.alt">
-          </li>
-        </ul><!-- .property__slider-nav -->
-
-        <div class="property__slider-main property__slider-main--vertical">
-          <div class="property__slider-images">
-            <div v-for="item in sliders" class="property__slider-image">
-              <img v-bind:src="item.src" alt="item.alt">
-            </div><!-- .property__slider-image -->
-          </div><!-- .property__slider-images -->
-
-          <ul class="image-navigation">
-            <li class="image-navigation__prev">
-              <span class="ion-ios-arrow-left"></span>
-            </li>
-            <li class="image-navigation__next">
-              <span class="ion-ios-arrow-right"></span>
-            </li>
-          </ul>
-
-          <span class="property__slider-info"><i class="ion-android-camera"></i><span class="sliderInfo"></span></span>
-        </div><!-- .property__slider-main -->
-      </div><!-- .property__slider-container -->
-    </div><!-- .container -->
-  </div><!-- .property__slider -->
-    `
+    template : '#realand-property-slider-template'
 });
 
 Vue.component('realand-property-details',{
@@ -1773,14 +1300,7 @@ Vue.component('realand-property-details',{
             ]
         }
     },
-    template : `
-        <div class="property__feature">
-              <h3 class="property__feature-title property__feature-title--b-spacing">Property Details</h3>
-              <ul class="property__details-list">
-                <li v-for="item in details" class="property__details-item"><span class="property__details-item--cat">{{item.label}}:</span> {{item.value}}</li>
-              </ul><!-- .property__details-list -->
-            </div><!-- .property__feature -->
-    `
+    template : '#realand-property-details-template'
 })
 
 Vue.component('realand-property-features',{
@@ -1839,14 +1359,7 @@ Vue.component('realand-property-features',{
         }
     }
     },
-    template : `
-        <div class="property__feature">
-            <h3 class="property__feature-title property__feature-title--b-spacing">{{features.name}}</h3>
-            <ul class="property__features-list">
-            <li v-for="item in features.list" class="property__features-item"><span class="property__features-icon ion-checkmark-round"></span>{{item.value}}</li>
-            </ul><!-- .property__features-list -->
-        </div><!-- .property__feature -->
-    `
+    template :'#realand-property-features-template'
 });
 
 // Google search once when upload the property info 
@@ -1939,32 +1452,7 @@ Vue.component('realand-property-nearby',{
           
         }
     },
-    template : `
-    <div class="property__feature">
-    <div class="property__feature-header">
-      <h3 class="property__feature-title">{{facilities.title}}</h3>
-      <nav class="property__tab-list">
-        <a v-for="subcategory in facilities.categorizedList" v-bind:href="'#property-'+subcategory.category" class="property__tab" v-bind:class="{'property__tab--active' : subcategory.active}">{{subcategory.category}} ({{subcategory.list.length}})</a>
-      </nav>
-    </div><!-- .property__feature-header -->
-    <div v-for="categorizedList in facilities.categorizedList" class="property__tab-container">
-      <table class="property__tab-content" v-bind:class="{'is-visible':categorizedList.active}" v-bind:id="'property-'+categorizedList.category">
-        <thead>
-          <tr>
-            <th v-for="header in facilities.headers">{{header}}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item,index) in categorizedList.list">
-            <td><span class="list-number">{{index+1}}</span> {{item.name}}</td>
-            <td>{{item.distance}}km</td>
-            <td>{{item.type}}</td>
-          </tr>
-        </tbody>
-      </table><!-- .property__tab-content -->
-    </div><!-- .property__tab-container -->
-  </div><!-- .property__feature -->
-    `
+    template : '#realand-property-nearby-template'
 })
 
 // realand-property-contact is NOT DONE yet
@@ -1996,33 +1484,7 @@ Vue.component('realand-property-contact',{
            url : "action.url"
         }
     },
-    template : `
-    <section class="widget">
-              <form class="contact-form contact-form--white">
-                <div class="contact-form__header">
-                  <div class="contact-form__header-container">
-                    <img src="images/uploads/contact_agent.png" alt="Tristina Avelon">
-                    <div class="contact-info">
-                      <span class="contact-company">Realand Real Estate</span>
-                      <h3 class="contact-name"><a href="#">Tristina Avelon</a></h3>
-                      <a href="tel:+8002883991" class="contact-number">Call: (800) 288 3991</a>
-                    </div><!-- .contact-info -->
-                  </div><!-- .contact-form__header-container -->
-                </div><!-- .contact-form__header -->
-                
-                <div class="contact-form__body">
-                  <input type="text" class="contact-form__field" placeholder="Name" name="name" required>
-                  <input type="email" class="contact-form__field" placeholder="Email" name="email" required>
-                  <input type="tel" class="contact-form__field" placeholder="Phone number" name="phone number">
-                  <textarea class="contact-form__field contact-form__comment" cols="30" rows="5" placeholder="Comment" name="comment" required>I am interested in Golden House Place 72, 1633 Newcomb Ave, San Francisco, CA 94124 (//info from parent component)</textarea>
-                </div><!-- .contact-form__body -->
-
-                <div class="contact-form__footer">
-                  <input type="submit" class="contact-form__submit" name="submit" value="Contact Agent">
-                </div><!-- .contact-form__footer -->
-              </form><!-- .contact-form -->
-            </section><!-- .widget -->
-            `
+    template : '#realand-property-contact-template'
 })
 
 Vue.component('realand-property-schedule-visit',{
@@ -2034,39 +1496,7 @@ Vue.component('realand-property-schedule-visit',{
         }
     },
 
-    template : `
-    <div class="property__feature">
-        <h3 class="property__feature-title property__feature-title--b-spacing">Schedule A Visit</h3>
-        <form class="property__form">
-        <div class="row">
-            <div class="col-sm-6">
-            <div class="property__form-wrapper">
-                <input type="text" name="date" class="property__form-field property__form-date" placeholder="Monday" data-format="l, F d, Y"  data-min-year="2018"  data-max-year="2020" data-translate-mode="true" data-modal="true" data-large-mode="true" required>
-                <span class="ion-android-calendar property__form-icon"></span>
-            </div><!-- .property__form-wrapper -->
-            </div><!-- col -->
-            <div class="col-sm-6">
-            <div class="property__form-wrapper">
-                <input type="text" name="time" class="property__form-field property__form-time" placeholder="07:30 AM" required>
-                <span class="ion-android-alarm-clock property__form-icon"></span>
-            </div><!-- .property__form-wrapper -->
-            </div><!-- col -->
-            <div class="col-sm-6">
-            <input type="text" name="name" class="property__form-field" placeholder="Your Name" required>
-            </div><!-- col -->
-            <div class="col-sm-6">
-            <input type="text" name="contact" class="property__form-field" placeholder="Your Email/Phone" required>
-            </div><!-- col -->
-            <div class="col-sm-12">
-            <textarea rows="4" name="message" class="property__form-field" placeholder="Message" required></textarea>
-            </div><!-- col -->
-            <div class="col-sm-12">
-            <input name="submit" type="submit" class="property__form-submit" value="Submit"></input>
-            </div><!-- .col -->
-        </div><!-- .row -->
-        </form>
-    </div><!-- .property__feature -->
-    `
+    template :'#realand-property-schedule-visit-template'
 })
 
 Vue.component('realand-mortgage-calculator', {
@@ -2156,58 +1586,7 @@ Vue.component('realand-mortgage-calculator', {
             }
         }
     },
-    template :`
-
-    <section class="widget widget--white widget--padding-20">
-    <h3 class="widget__title">{{calculator.title}}</h3>
-    <form class="form-calculator">
-      <div class="form-calculator__group">
-        <label for="home-price" class="form-calculator__label">{{calculator.housePrice.label}}</label>
-        <span class="form-calculator__icon form-calculator__currency">{{calculator.currency}}</span>
-        <input id="home-price" type="text" class="form-calculator__field" required v-bind:value="calculator.housePrice.value">
-      </div><!-- .form-calculator__group -->
-
-      <div class="form-calculator__wrapper">
-        <div class="form-calculator__group form-calculator__group--larger">
-          <label for="down-payment" class="form-calculator__label">{{calculator.downPay.label}}</label>
-          <span class="form-calculator__icon form-calculator__currency">{{calculator.currency}}</span>
-          <input id="down-payment" type="text" class="form-calculator__field" required v-bind:value="calculator.downPay.value">
-        </div><!-- .form-calculator__group -->
-
-        <div class="form-calculator__group form-calculator__group--smaller">
-          <label for="percent" class="form-calculator__label">{{calculator.downPay.percentLabel}}</label>
-          <span class="form-calculator__icon form-calculator__percent">%</span>
-          <input id="percent" type="text" class="form-calculator__field" required v-bind:value="calculator.downPay.percent">
-        </div><!-- .form-calculator__group -->
-      </div><!-- .form-calculator__wrapper -->  
-
-      <div class="form-calculator__group">
-        <label for="annual-rate" class="form-calculator__label">{{calculator.interest.label}}</label>
-        <span class="form-calculator__icon form-calculator__percent">%</span>
-        <input id="annual-rate" type="text" class="form-calculator__field" required v-bind:value="calculator.interest.value">
-      </div><!-- .form-calculator__group -->
-
-      <div class="form-calculator__group">
-        <label for="loan-term" class="form-calculator__label">{{calculator.termsLabel}}</label>
-        <select id="loan-term" class="ht-field" required>
-          <option v-for="term in calculator.terms" v-bind:value="term.value" :selected="term.selected">{{term.label}}</option>
-        </select>
-      </div><!-- .form-calculator__group -->
-      <div class="form-calculator__group">
-        <label for="percent" class="form-calculator__label">{{calculator.methodsLabel}}</label>
-        <select id="percent" class="ht-field" required>
-          <option v-for="method in calculator.methods" v-bind:value="method.value" :selected="method.selected">{{method.label}}</option>
-        </select>
-      </div><!-- .form-calculator__group -->
-
-      <input type="submit" class="form-calculator__submit" value="Calculate">
-      
-      <div class="form-calculator__result">
-        <h3 class="mortgage-payment">{{calculator.paymentLabel}}<span>{{calculator.currency}}{{calculator.payment}}</span></h3>
-      </div>
-    </form><!-- .form-calculator -->
-  </section><!-- .widget -->
-    `
+    template :'#realand-mortgage-calculator-template'
 })
 
 
@@ -2239,25 +1618,7 @@ Vue.component('realand-property-similar',{
             ]
         }
     },
-    template : `
-    <section class="widget widget--white widget--padding-20">
-        <h3 class="widget__title">Similar Homes</h3>
-        <div v-for="item in similar" class="similar-home">
-        <a v-bind:href="item.id">
-            <div class="similar-home__image">
-            <div class="similar-home__overlay"></div><!-- .similar-home__overlay -->
-            <img v-bind:src="item.src" v-bind:alt="item.title">
-            <span class="similar-home__favorite"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
-            </div><!-- .similar-home__image -->
-            <div class="similar-home__content">
-            <h3 class="similar-home__title">{{item.title}}</h3>
-            <span class="similar-home__price">\${{item.price}}</span>
-            </div><!-- .similar-home__content -->
-        </a>
-        </div><!-- .similar-home -->
-    </section><!-- .widget -->          
-    
-    `
+    template : '#realand-property-similar-template'
 })
 
 
@@ -2268,12 +1629,7 @@ Vue.component('realand-property-description',{
             content : "Spacious and grand, 3 bedroom, 2 bath (one en-suite) condo boasts 1,752 Sq Ft. Middle unit of a beautiful three-unit 1890's Victorian designed by William Armitage. Period details: high ceilings, ornate moldings, 2 fireplaces, stained glass, beveled glass transoms, hardwood floors. Spacious dining room, remodeled kitchen and wonderful deeded walk-out deck. Convenient in-unit laundry room, deeded parking & storage space."
         }
     },
-    template :`
-    <div class="property__feature">
-        <h3 class="property__feature-title property__feature-title--b-spacing">{{title}}</h3>
-        <p>{{content}}</p>
-    </div><!-- .property__feature -->
-    `
+    template : '#realand-property-description-template'
 })
 
 Vue.component('realand-property-openhouse',{
@@ -2299,18 +1655,7 @@ Vue.component('realand-property-openhouse',{
           }  
         }
     },
-    template : `
-    <div class="property__feature">
-        <h3 class="property__feature-title">{{openhouse.title}}</h3>
-        <div class="property__feature-schedule">
-            <ul class="property__feature-time-list">
-                <li v-for="timeslot in openhouse.timeslots" class="property__feature-time-item">{{timeslot.day}} {{timeslot.time}}</li>
-            </ul>
-            <a href="#" class="property__feature-cta">Go See This Home</a>
-        </div><!-- .property__feature-schedule -->
-        <a href="#" class="property__feature-open-maps"><span class="ion-ios-location-outline"></span> Open on Google Maps</a>
-    </div><!-- .property__feature -->
-    `
+    template : '#realand-property-openhouse-template'
 })
 
 const eventbus = new Vue({
@@ -2333,49 +1678,13 @@ Vue.component('realand-list-list',{
     },
 
     methods : {
-        testabc(event){
+        testabc : function(event){
             console.log(event)
             this.properties[0].alt = event;
         }
     },
 
-    template : `
-    <section>
-    <div v-for="item in properties" class="item-grid__container">
-      <div class="listing listing--v2">
-        <div class="item-grid__image-container item-grid__image-container--v2 page-link" v-bind:data-page="'property'">
-          <a href="#">
-            <div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-            <img v-bind:src="item.thumbnail" v-bind:alt="item.alt" class="listing__img">
-            <span class="item__label">For Sale</span>
-            <span class="listing__favorite listing__favorite--v2"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
-          </a>
-        </div><!-- .col -->
-
-        <div class="item-grid__content-container item-grid__content-container--v2">
-          <div class="listing__content--v2">
-            <div class="listing__header">
-              <div class="listing__header-primary">
-                <span class="listing__type">Villa</span>
-                <h3 class="listing__title page-link" v-bind:data-page="'property'"><a href="#">{{item.alt}}</a></h3>
-                <p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{item.house.address}}</p>
-              </div><!-- .listing__header-primary -->
-              <p class="listing__price">\${{item.house.price}}</p>
-            </div><!-- .listing__header -->
-            <div class="listing__details">
-              <ul class="listing__stats">
-                <li v-for="subitem in item.house.internal"><span class="listing__figure">{{subitem.quantity}}</span> {{subitem.unit}}</li>
-              </ul><!-- .listing__stats -->
-              <div  class="page-link" v-bind:data-page="'property'">
-              <a href="#" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
-              </div>
-            </div><!-- .listing__details -->
-          </div><!-- .listing-content -->
-        </div><!-- .col -->
-      </div><!-- .listing -->
-    </div><!-- .item-grid__container -->
-    </section>
-    `
+    template : '#realand-list-list-template'
 })
 
 Vue.component('realand-list-sort',{
@@ -2413,26 +1722,7 @@ Vue.component('realand-list-sort',{
             this.properties[0].alt = "Muahahahahaha";
         }
     },
-    template : 
-    `
-    <div class="listing-sort listing-sort--main-listing">
-    <div class="listing-sort__inner">
-        <ul class="listing-sort__list">
-        <li class="listing-sort__item"><a href="#" class="listing-sort__link listing-sort__link--active"><i class="fa fa-th-list listing-sort__icon" aria-hidden="true"></i></a></li>
-        <li class="listing-sort__item"><a href="#" class="listing-sort__link"><i class="fa fa-th-large listing-sort__icon" aria-hidden="true"></i></a></li>
-        </ul>
-
-        <span class="listing-sort__result">{{properties.length}} results</span>
-
-        <p class="listing-sort__sort">
-        <label for="sort-type" class="listing-sort__label"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> {{sort.title}} </label>
-        <select name="sort-type" id="sort-type" class="ht-field listing-sort__field">
-            <option v-for="item in sort.types" v-bind:value="item.value">{{item.label}}</option>
-        </select>
-        </p><!-- .listing-sort__sort -->
-    </div><!-- .listing-sort__inner -->
-    </div><!-- .listing-sort -->
-    `
+    template : '#realand-list-sort-template'
 });
 
 Vue.component('realand-list-filter',{
@@ -2466,25 +1756,11 @@ Vue.component('realand-list-filter',{
         }
     },
     methods : {
-        test(){
+        test : function(){
             eventbus.$emit('customevent','event message is right here');
         }
     },
-    template : `
-    <section class="widget main-listing__widget">
-    <form class="main-listing__form">
-        <div class="main-listing__wrapper">
-        <label class="main-listing__form-title">{{filter.propertyType.title}}</label>
-        <div v-for="item in filter.propertyType.list" class="main-listing__form-select">
-        <input type="radio" name="property-type" v-bind:id="item.value" class="main-listing__form-radio" v-bind:value="item.value">
-        <label v-bind:for="item.value" class="main-listing__form-label">{{item.label}}</label>
-        <span class="main-listing__form-desc">({{houses.length}})</span>
-        </div><!-- main-listing__form-select -->
-        </div><!-- .main-listing__wrapper -->
-    <button class="main-listing__form-reset" v-on:click="test" type="reset">Clear Filter</button>
-    </form><!-- .main-listing__form -->
-    </section><!-- .widget -->
-    `
+    template :'#realand-list-filter-template'
 })
 
 Vue.component('realand-list-root',{
@@ -2859,22 +2135,7 @@ Vue.component('realand-list-root',{
         }
     },
 
-    template : `
-    <div class="main-listing__main">
-    <div class="container">
-      <div class="row">
-        <h1 class="section__title section__title--centered section__title--b-margin-40">Property For Sale</h1>
-        <aside class="col-md-3">
-        <realand-list-filter v-bind:properties="properties"></realand-list-filter>
-        </aside>
-        <main class="col-md-9">
-        <realand-list-sort v-bind:properties="properties"></realand-list-sort>
-        <realand-list-list v-bind:properties="properties"></realand-list-list>
-        </main>
-    </div><!-- row -->
-    </div><!-- .container -->
-    </div><!-- .main-listing__main -->
-    `
+    template :'#realand-list-root-template'
 
 })
 
@@ -2894,68 +2155,16 @@ Vue.component('realand-realtor-detail', {
         }
         
     },
-    template : `
-    <div>
-    <realand-menu-simple></realand-menu-simple>
-    <section class="single agents-single">
-    <div class="container">
-        <ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border ht-breadcrumbs--b-margin">
-        <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
-        <li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Agent</span></a></li>
-        <li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Agent Single</span></li>
-        </ul><!-- ht-breadcrumb -->
+    template : '#realand-realtor-detail-template'
+})
 
-        <div class="single__wrapper agents-single__wrapper">
-        <div class="row">
-            <div class="col-md-9">
-            <div class="single__inner agents-single__inner">
-                <div class="single__avatar agents-single__avatar">
-                <img src="images/uploads/michael_beckle.jpg" alt="Michael Beckle">
-                </div><!-- .agents-single__avatar -->
-
-                <div class="single__detail agents-single__detail">
-                <h3 class="agents-single__name">{{realtor.lastName}} {{realtor.firstName}}</h3>
-                <span class="famous-agents__position">{{realtor.title}} | Realand®</span>
-                <ul class="famous-agents__contact agents-single__contact">
-                    <li class="famous-agents__phone"><i class="fa fa-phone fa-fw" aria-hidden="true"></i><a href="tel:+3104326507">{{realtor.officePhone}}</a></li>
-                    <li class="famous-agents__email"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i><a v-bind:href="'mailto:'+realtor.email">{{realtor.email}}</a></li>
-                </ul>
-                <ul class="agency__social agents-single__social">
-                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                </ul>
-                <p class="agents-single__desc">
-                    {{realtor.description}}
-                </p>
-                </div><!-- .agents-single__detail -->
-            </div><!-- agents-single__inner -->
-            </div><!-- .col -->
-
-            <div class="col-md-3">
-            <form class="contact-form contact-form--bordered agents-single__contact-from">
-                <div class="contact-form__header">
-                <h3 class="contact-form__title">Contact {{realtor.lastName}} {{realtor.firstName}}</h3>
-                </div><!-- .contact-form__header -->
-                <div class="contact-form__body">
-                <input type="text" class="contact-form__field" placeholder="Name" name="name" required>
-                <input type="email" class="contact-form__field" placeholder="Email" name="email" required>
-                <input type="tel" class="contact-form__field" placeholder="Phone number" name="phone number">
-                <textarea class="contact-form__field contact-form__comment" cols="30" rows="4" placeholder="Comment" name="comment" required></textarea>
-                
-                </div><!-- .contact-form__body -->
-                <div class="contact-form__footer">
-                <input type="submit" class="contact-form__submit" name="submit" value="Contact Agent">
-                </div><!-- .contact-form__footer -->
-            </form><!-- .contact-form -->
-            </div><!-- .col -->
-        </div><!-- .row -->
-        </div><!-- .agents-single__wrapper -->
-    </div><!-- .container -->
-    </section><!-- .agents-single -->
-    </div>
-    `
+Vue.component('realand-contact-us',{
+    data : function(){
+        return {
+        }
+    },
+    props : ['contactInfo'],
+    template : '#realand-contact-us-template'
 })
 
 
@@ -2986,7 +2195,6 @@ function registerPage(name, pageFunction){
 }
 
 function home(){
-    alert("home page function called!");
     $('.page').hide();
     $('.home-page').show();
 }
@@ -3015,12 +2223,19 @@ function realtorDetail(){
     
 }
 
+function contactUs(){
+    alert("contact us page has been called!!!");
+}
+
+
+
 
 
 registerPage("home", home);
 registerPage("propertyList", propertyList);
 registerPage("property", property);
 registerPage("realtorDetail", realtorDetail);
+registerPage("contactUs", contactUs);
 
 home();
 
