@@ -1,10 +1,17 @@
 $.support.cors = true;
 
+const eventbus = new Vue({
+    data : {
+        eventbuss :"myfuckingeventbussssss"
+    }
+});
+
 Vue.component('realand-root',{
     data : function(){
         return {
             loadCompanyUrl : "http://localhost:8080/api/company/1",
-            company : {}
+            company : { 
+            }
         }
     },
     created : function(){
@@ -13,8 +20,9 @@ Vue.component('realand-root',{
             url : this.loadCompanyUrl,
             dataType:"json",
             success : function(response){
-                console.log("------------ + : "+ JSON.stringify(this));
                 self.company = response;
+                eventbus.$emit("loadContact", self.company.companyContact);
+                eventbus.$emit("loadPropertiesSummary", self.company.properties);
             }
         }); 
     },
@@ -600,165 +608,18 @@ Vue.component('realand-property-summary',{
     data : function(){
         return {
             properties : [
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_1.html",
-                    label : "Rel House Luxury Villa",
-                    favorate : "true",
-                    house : {
-                        address : "157 West 57th St, 77 - Central Park South, NYC",
-                        internal : [ 
-                            {
-                                quantity : "5",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "2450",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "3",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$2,500,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_2.html",
-                    label : "Real House Luxury Villa",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                }
+               
             ]
         }
     },
-
+    created : function(){
+        eventbus.$on("loadPropertiesSummary", this.loadPropertiesSummary)
+    },
+    methods : {
+        loadPropertiesSummary : function(data){
+            this.properties = data;
+        }
+    },
     template :'#realand-property-summary-template'
 });
 
@@ -1658,13 +1519,6 @@ Vue.component('realand-property-openhouse',{
     template : '#realand-property-openhouse-template'
 })
 
-const eventbus = new Vue({
-    data : {
-        eventbuss :"myfuckingeventbussssss"
-    }
-});
-
-
 Vue.component('realand-list-list',{
     props : ['properties'],
     data : function(){
@@ -2161,9 +2015,18 @@ Vue.component('realand-realtor-detail', {
 Vue.component('realand-contact-us',{
     data : function(){
         return {
+            contactInfo : {}
+        } 
+    },
+    
+    created : function(){
+        eventbus.$on("loadContact", this.loadContact);
+    },
+    methods : {
+        loadContact : function(data){
+            this.contactInfo = data;
         }
     },
-    props : ['contactInfo'],
     template : '#realand-contact-us-template'
 })
 

@@ -469,8 +469,8 @@
 			<div class="item-grid__image-container">
 				<a v-bind:href="property.link">
 				<div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-				<img v-bind:src="property.thumbnail" v-bind:alt="property.alt" class="listing__img">
-				<span class="listing__favorite"><i class="fa fa-heart-o" v-bind:aria-hidden="property.favorate"></i></span>
+				<img v-bind:src="property.thumbnail" v-bind:alt="property.title" class="listing__img">
+				<span class="listing__favorite"><i class="fa fa-heart-o" aria-hidden=""></i></span>
 				</a>
 			</div><!-- .item-grid__image-container -->
 	
@@ -478,14 +478,16 @@
 				<div class="listing__content">
 				<div class="listing__header">
 					<div class="listing__header-primary">
-					<h3 class="listing__title"><a v-bind:href="property.link">{{property.label}}</a></h3>
-					<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{property.house.address}}</p>
+					<h3 class="listing__title"><a v-bind:href="property.link">{{property.title}}</a></h3>
+					<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{property.address}}</p>
 					</div><!-- .listing__header-primary -->
-					<p class="listing__price">{{property.house.price}}</p>
+					<p class="listing__price">{{property.listingPrice}}</p>
 				</div><!-- .listing__header -->
 				<div class="listing__details">
 					<ul class="listing__stats">
-					<li v-for="item in property.house.internal"><span class="listing__figure">{{item.quantity}}</span> {{item.unit}}</li>
+					<li><span class="listing__figure">{{property.numBed}}</span> BEDS</li>
+					<li><span class="listing__figure">{{property.numBath}}</span> BATHS</li>
+					<li><span class="listing__figure">{{property.squareFeet}}</span> SQ. FT</li>
 					</ul><!-- .listing__stats -->
 					<a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="false"></i></span></a>
 				</div><!-- .listing__details -->
@@ -1116,8 +1118,15 @@
 			<div class="col-md-6">
 			<h2 class="contact__title">Contact Us</h2>
 			<div class="contact__desc">
-				<p>{{contactInfo}}</p>
-				<p>{{aaa}}</p>
+				
+
+				<p>{{contactInfo.email}}</p>
+				<p>{{contactInfo.phone}}</p>
+				<p>{{contactInfo.address}}</p>
+				<p>{{contactInfo.website}}</p>
+				<p>{{contactInfo.fax}}</p>
+				<p>{{contactInfo.contactDescription}}</p>
+				
 				
 			</div>
 			<!--
