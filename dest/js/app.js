@@ -16,15 +16,41 @@ Vue.component('realand-root',{
     },
     created : function(){
         var self  = this;
+        //initial load company, realtors, and property list info from backend
         $.ajax({
             url : this.loadCompanyUrl,
             dataType:"json",
             success : function(response){
                 self.company = response;
-                eventbus.$emit("loadContact", self.company.companyContact);
-                eventbus.$emit("loadPropertiesSummary", self.company.properties);
+                self.loadContactUs();
+                self.loadPropertySummary();
+                self.loadFeatureListing();
+                self.loadListRoot();
+                
+                
             }
         }); 
+    },
+    methods:{
+        loadContactUs : function(){
+            eventbus.$emit("loadContact", this.company.companyContact);           
+        },
+
+        loadPropertySummary : function(){
+            eventbus.$emit("loadPropertiesSummary", this.company.properties);
+        },
+
+        loadFeatureListing : function(){
+            var list = this.company.properties;
+            var featurelist = list.filter( function(property){
+                return property.featured === true;
+            });
+            eventbus.$emit("loadFeatureListing", featurelist);
+        },
+
+        loadListRoot : function(){
+            eventbus.$emit("loadListRoot", this.company.properties);
+        }
     },
     template : '#realand-root-template'
 })
@@ -658,84 +684,16 @@ Vue.component('realand-feature-listing', {
     data : function(){
         return {
             properties : [
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_1.html",
-                    label : "Rel House Luxury Villa",
-                    favorate : "true",
-                    house : {
-                        address : "157 West 57th St, 77 - Central Park South, NYC",
-                        internal : [ 
-                            {
-                                quantity : "5",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "2450",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "3",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$2,500,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_2.html",
-                    label : "Real House Luxury Villa",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                }
+               
             ]
+        }
+    },
+    created : function(){
+        eventbus.$on("loadFeatureListing", this.loadFeatureListing);
+    },
+    methods : {
+        loadFeatureListing : function(data){
+            this.properties = data;
         }
     },
 
@@ -1621,371 +1579,17 @@ Vue.component('realand-list-root',{
     data : function(){
        return { properties : 
             [
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_1.html",
-                    label : "Rel House Luxury Villa",
-                    favorate : "true",
-                    house : {
-                        address : "157 West 57th St, 77 - Central Park South, NYC",
-                        internal : [ 
-                            {
-                                quantity : "5",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "2450",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "3",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$2,500,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "Real House Luxury Villa",
-                    link : "single_property_2.html",
-                    label : "Real House Luxury Villa",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : 
-                        [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "false",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
-
-                {
-                    thumbnail : "images/test5.jpg",
-                    alt : "BiGUi Garden 77",
-                    link : "single_property_1.html",
-                    label : "BiGUi Garden 77",
-                    favorate : "true",
-                    house : {
-                        address : "111 South 88th St, 88 - Toronto, ON",
-                        internal : [ 
-                            {
-                                quantity : "8",
-                                unit : "BEDS"    
-                            },
-                            {
-                                quantity : "5720",
-                                unit : "SQ. FT"
-                            },
-                            {
-                                quantity : "5",
-                                unit : "BATHS"
-                            }
-                        ],
-                        price : "$8,888,000"
-                    }
-                },
+               
             ]
+        }
+    },
+    created : function(){
+        eventbus.$on("loadListRoot", this.loadListRoot);
+    },
+
+    methods : {
+        loadListRoot:function(data){
+            this.properties = data;
         }
     },
 

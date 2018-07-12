@@ -138,7 +138,7 @@
 	<!-- Beginning of contact us page -->
 	<section class="page contactUs-page">
 		<realand-menu-simple></realand-menu-simple>
-		<realand-contact-us v-bind:contact-info="company.companyContact"></realand-contact-us>
+		<realand-contact-us></realand-contact-us>
 	</section>
 	<!-- End of contact us page -->
 	
@@ -533,12 +533,14 @@
 		  
 					<div class="item-grid__content-container">
 					  <div class="listing__content">
-						<h3 class="listing__title"><a v-bind:href="property.link">{{property.label}}</a></h3>
-						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span> {{property.house.address}}</p>
-						<p class="listing__price">{{property.price}}</p>
+						<h3 class="listing__title"><a v-bind:href="property.link">{{property.title}}</a></h3>
+						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span> {{property.address}}</p>
+						<p class="listing__price">{{property.listingPrice}}</p>
 						<div class="listing__details">
 						  <ul class="listing__stats">
-							<li v-for="item in property.house.internal"><span class="listing__figure">{{item.quantity}}</span>{{item.unit}}</li>
+								<li><span class="listing__figure">{{property.numBed}}</span> BEDS</li>
+								<li><span class="listing__figure">{{property.numBath}}</span> BATHS</li>
+								<li><span class="listing__figure">{{property.squareFeet}}</span> SQ. FT</li>
 						  </ul><!-- .listing__stats -->
 						  <a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
 						</div><!-- .listing__details -->
@@ -959,7 +961,7 @@
 				<div class="item-grid__image-container item-grid__image-container--v2 page-link" v-bind:data-page="'property'">
 				  <a href="#">
 					<div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-					<img v-bind:src="item.thumbnail" v-bind:alt="item.alt" class="listing__img">
+					<img  v-bind:data-page="'property'" v-bind:src="item.thumbnail" v-bind:alt="item.title" class="listing__img page-link">
 					<span class="item__label">For Sale</span>
 					<span class="listing__favorite listing__favorite--v2"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
 				  </a>
@@ -970,14 +972,16 @@
 					<div class="listing__header">
 					  <div class="listing__header-primary">
 						<span class="listing__type">Villa</span>
-						<h3 class="listing__title page-link" v-bind:data-page="'property'"><a href="#">{{item.alt}}</a></h3>
-						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{item.house.address}}</p>
+						<h3 class="listing__title"><a href="#">{{item.title}}</a></h3>
+						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon page-link" v-bind:data-page="'property'"></span>{{item.address}}</p>
 					  </div><!-- .listing__header-primary -->
-					  <p class="listing__price">\${{item.house.price}}</p>
+					  <p class="listing__price">\${{item.listingPrice}}</p>
 					</div><!-- .listing__header -->
 					<div class="listing__details">
 					  <ul class="listing__stats">
-						<li v-for="subitem in item.house.internal"><span class="listing__figure">{{subitem.quantity}}</span> {{subitem.unit}}</li>
+							<li><span class="listing__figure">{{item.numBed}}</span> BEDS</li>
+							<li><span class="listing__figure">{{item.numBath}}</span> BATHS</li>
+							<li><span class="listing__figure">{{item.squareFeet}}</span> SQ. FT</li>
 					  </ul><!-- .listing__stats -->
 					  <div  class="page-link" v-bind:data-page="'property'">
 					  <a href="#" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
