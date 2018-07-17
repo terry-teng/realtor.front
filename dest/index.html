@@ -68,55 +68,7 @@
 	<!-- End of home page -->
 	
 	<!-- start of property detail page -->
-	<section class="page property-page">
-		<realand-menu-simple></realand-menu-simple>
-		<section class="property">
-			<div class="container">
-				<ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border">
-					<li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
-					<li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Property</span></a></li>
-					<li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Single Property V1</span></li>
-				</ul><!-- ht-breadcrumb -->
-			</div><!-- .container -->
-		
-			<realand-property-header></realand-property-header>
-			<realand-property-slider></realand-property-slider>
-			
-			<div class="property__container">
-				<div class="container">
-					<div class="row">
-						<aside class="col-md-3">
-							<div class="widget__container">
-								<realand-property-contact></realand-property-contact>
-		
-								<realand-property-similar></realand-property-similar>
-		
-								<realand-mortgage-calculator></realand-mortgage-calculator>
-							</div><!-- .widget__container -->
-						</aside>
-						
-						<main class="col-md-9">
-							<div class="property__feature-container">
-								<realand-property-openhouse></realand-property-openhouse>
-		
-								<realand-property-description></realand-property-description>
-		
-								<realand-property-details></realand-property-details>
-		
-								<realand-property-features></realand-property-features>
-		
-		
-								<realand-property-nearby></realand-property-nearby>
-								<realand-property-schedule-visit></realand-property-schedule-visit>
-							</div><!-- .property__feature-container -->
-						</main>
-					</div><!-- .row -->
-				</div><!-- .container -->
-			</div><!-- .property__container -->
-		</section><!-- .property -->
-	
-	
-	</section>
+	<realand-property-root></realand-property-root>
 	<!-- End of property detail page -->
 	
 	
@@ -465,11 +417,11 @@
 <script type="text/x-template" id="realand-property-summary-template">
 	<div class="row">
 			<div v-for="property in properties" class="col-md-6 item-grid__container">
-			<div class="listing">
+			<div class="page-link" v-bind:data-page="'property'">
 			<div class="item-grid__image-container">
-				<a v-bind:href="property.link">
+				<a v-bind:href="property.propertyBasicField.link">
 				<div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-				<img v-bind:src="property.thumbnail" v-bind:alt="property.title" class="listing__img">
+				<img v-bind:src="property.propertyBasicField.thumbnail" v-bind:alt="property.propertyBasicField.title" class="listing__img">
 				<span class="listing__favorite"><i class="fa fa-heart-o" aria-hidden=""></i></span>
 				</a>
 			</div><!-- .item-grid__image-container -->
@@ -477,17 +429,17 @@
 			<div class="item-grid__content-container">
 				<div class="listing__content">
 				<div class="listing__header">
-					<div class="listing__header-primary">
-					<h3 class="listing__title"><a v-bind:href="property.link">{{property.title}}</a></h3>
-					<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{property.address}}</p>
+					<div class="page-link" v-bind:data-page="'property'">
+					<h3 class="listing__title"><a v-bind:href="property.link">{{property.propertyBasicField.title}}</a></h3>
+					<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{property.propertyBasicField.address}}</p>
 					</div><!-- .listing__header-primary -->
-					<p class="listing__price">{{property.listingPrice}}</p>
+					<p class="listing__price">{{property.propertyBasicField.listingPrice}}</p>
 				</div><!-- .listing__header -->
 				<div class="listing__details">
 					<ul class="listing__stats">
-					<li><span class="listing__figure">{{property.numBed}}</span> BEDS</li>
-					<li><span class="listing__figure">{{property.numBath}}</span> BATHS</li>
-					<li><span class="listing__figure">{{property.squareFeet}}</span> SQ. FT</li>
+					<li><span class="listing__figure">{{property.propertyBasicField.numBed}}</span> BEDS</li>
+					<li><span class="listing__figure">{{property.propertyBasicField.numBath}}</span> BATHS</li>
+					<li><span class="listing__figure">{{property.propertyBasicField.squareFeet}}</span> SQ. FT</li>
 					</ul><!-- .listing__stats -->
 					<a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="false"></i></span></a>
 				</div><!-- .listing__details -->
@@ -524,23 +476,23 @@
 				<div v-for="property in properties" class="col-md-4 featured-listing__container">
 				  <div class="listing">
 					<div class="item-grid__image-container">
-					  <a v-bind:href="property.link">
+					  <a v-bind:href="property.propertyBasicField.link">
 						<div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-						<img v-bind:src="property.thumbnail" v-bind:alt="property.alt" class="listing__img">
+						<img v-bind:src="property.propertyBasicField.thumbnail" v-bind:alt="property.propertyBasicField.alt" class="listing__img">
 						<span class="listing__favorite"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
 					  </a>
 					</div><!-- item-grid__image-container -->
 		  
 					<div class="item-grid__content-container">
 					  <div class="listing__content">
-						<h3 class="listing__title"><a v-bind:href="property.link">{{property.title}}</a></h3>
-						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span> {{property.address}}</p>
-						<p class="listing__price">{{property.listingPrice}}</p>
+						<h3 class="listing__title"><a v-bind:href="property.link">{{property.propertyBasicField.title}}</a></h3>
+						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span> {{property.propertyBasicField.address}}</p>
+						<p class="listing__price">{{property.propertyBasicField.listingPrice}}</p>
 						<div class="listing__details">
 						  <ul class="listing__stats">
-								<li><span class="listing__figure">{{property.numBed}}</span> BEDS</li>
-								<li><span class="listing__figure">{{property.numBath}}</span> BATHS</li>
-								<li><span class="listing__figure">{{property.squareFeet}}</span> SQ. FT</li>
+								<li><span class="listing__figure">{{property.propertyBasicField.numBed}}</span> BEDS</li>
+								<li><span class="listing__figure">{{property.propertyBasicField.numBath}}</span> BATHS</li>
+								<li><span class="listing__figure">{{property.propertyBasicField.squareFeet}}</span> SQ. FT</li>
 						  </ul><!-- .listing__stats -->
 						  <a v-bind:href="property.link" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
 						</div><!-- .listing__details -->
@@ -684,6 +636,57 @@
 			</div><!-- .container -->
 		  </header><!-- .header -->
 </script>
+<script type="text/x-template" id="realand-property-root-template">
+	<section class="page property-page">
+		<realand-menu-simple></realand-menu-simple>
+		<section class="property">
+			<div class="container">
+				<ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border">
+					<li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
+					<li class="ht-breadcrumbs__item"><a href="#" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Property</span></a></li>
+					<li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Single Property V1</span></li>
+				</ul><!-- ht-breadcrumb -->
+			</div><!-- .container -->
+		
+			<realand-property-header></realand-property-header>
+			<!--<realand-property-slider></realand-property-slider>-->
+			<div id="propertySliderContainer"></div>
+			
+			<div class="property__container">
+				<div class="container">
+					<div class="row">
+						<aside class="col-md-3">
+							<div class="widget__container">
+								<realand-property-contact></realand-property-contact>
+		
+								<realand-property-similar></realand-property-similar>
+		
+								<realand-mortgage-calculator></realand-mortgage-calculator>
+							</div><!-- .widget__container -->
+						</aside>
+						
+						<main class="col-md-9">
+							<div class="property__feature-container">
+								<realand-property-openhouse></realand-property-openhouse>
+		
+								<realand-property-description></realand-property-description>
+		
+								<realand-property-details></realand-property-details>
+		
+								<realand-property-features></realand-property-features>
+		
+		
+								<realand-property-nearby></realand-property-nearby>
+								<realand-property-schedule-visit></realand-property-schedule-visit>
+							</div><!-- .property__feature-container -->
+						</main>
+					</div><!-- .row -->
+				</div><!-- .container -->
+			</div><!-- .property__container -->
+		</section><!-- .property -->
+	</section>
+
+</script>
 <script type="text/x-template" id="realand-property-header-template">
 	 
     <div class="property__header">
@@ -695,17 +698,19 @@
 								<span class="property__offer">{{propertyHeader.tags[0].tag}}</span>
 								<span class="property__type">{{propertyHeader.tags[1].tag}}</span>
 							</div><!-- .property__meta -->
-							<h2 class="property__name">{{propertyHeader.label}}</h2>
+							<h2 class="property__name">{{property.title}}</h2>
 						   
 						</li>
 						<li class="property__details property__main-item">
 							<ul class="property__stats">
-								<li v-for="item in propertyHeader.house.internal" class="property__stat"><span class="property__figure">{{item.quantity}}</span> {{item.unit}}</li>
+								<li class="property__stat"><span class="property__figure">BEDS</span> {{property.numBed}}</li>
+								<li class="property__stat"><span class="property__figure">BATH</span> {{property.numBath}}</li>
+								<li class="property__stat"><span class="property__figure">SQ. FT</span> {{property.squareFeet}}</li>
 							</ul><!-- .listing__stats -->
 						</li>
 						<li class="property__price property__main-item">
-							<h4 class="property__price-primary">{{propertyHeader.house.dollarsign}}{{propertyHeader.house.price}}</h4>
-							<span class="property__price-secondary">{{propertyHeader.house.dollarsign}}{{propertyHeader.house.priceSF}}</span>
+							<h4 class="property__price-primary">$ {{property.listingPrice}}</h4>
+							<span class="property__price-secondary">$ {{property.listingPrice/property.squareFeet}}</span>
 						</li>
 					</ul><!-- .property__main -->
 		
@@ -734,19 +739,21 @@
 			</div><!-- .property__header -->
 </script>
 <script type="text/x-template" id="realand-property-slider-template">
-	<div class="property__slider">
+	
+  <div id="propertySlider">
+			<div class="property__slider">
 			<div class="container">
 			  <div class="property__slider-container property__slider-container--vertical">
 				<ul class="property__slider-nav property__slider-nav--vertical">
 				  <li v-for="item in sliders" class="property__slider-item">
-					<img v-bind:src="item.src" v-bind:alt="item.alt">
+					<img v-bind:src="item.url" v-bind:alt="item.id">
 				  </li>
 				</ul><!-- .property__slider-nav -->
 		
 				<div class="property__slider-main property__slider-main--vertical">
 				  <div class="property__slider-images">
 					<div v-for="item in sliders" class="property__slider-image">
-					  <img v-bind:src="item.src" alt="item.alt">
+					<img v-bind:src="item.url" v-bind:alt="item.id">
 					</div><!-- .property__slider-image -->
 				  </div><!-- .property__slider-images -->
 		
@@ -763,13 +770,14 @@
 				</div><!-- .property__slider-main -->
 			  </div><!-- .property__slider-container -->
 			</div><!-- .container -->
-		  </div><!-- .property__slider -->
+			</div><!-- .property__slider -->
+		</div>
 </script>
 <script type="text/x-template" id="realand-property-details-template">
 	<div class="property__feature">
 			<h3 class="property__feature-title property__feature-title--b-spacing">Property Details</h3>
 			<ul class="property__details-list">
-			  <li v-for="item in details" class="property__details-item"><span class="property__details-item--cat">{{item.label}}:</span> {{item.value}}</li>
+			  <li v-for="(value, key) in basicDetails" v-if="key != 'description' && key != 'thumbnail'" class="property__details-item"><span class="property__details-item--cat">{{key}}:</span> {{value}}</li>
 			</ul><!-- .property__details-list -->
 		  </div><!-- .property__feature -->
 </script>
@@ -938,8 +946,8 @@
 </script>
 <script type="text/x-template" id="realand-property-description-template">
 	<div class="property__feature">
-			<h3 class="property__feature-title property__feature-title--b-spacing">{{title}}</h3>
-			<p>{{content}}</p>
+			<h3 class="property__feature-title property__feature-title--b-spacing">Property Description</h3>
+			<p>{{description}}</p>
 		</div><!-- .property__feature -->
 </script>
 <script type="text/x-template" id="realand-property-openhouse-template">
@@ -956,12 +964,12 @@
 </script>
 <script type="text/x-template" id="realand-list-list-template">
 	<section>
-			<div v-for="item in properties" class="item-grid__container">
+			<div v-for="item in filteredProperties" class="item-grid__container">
 			  <div class="listing listing--v2">
-				<div class="item-grid__image-container item-grid__image-container--v2 page-link" v-bind:data-page="'property'">
+				<div class="item-grid__image-container item-grid__image-container--v2">
 				  <a href="#">
 					<div class="item-grid__image-overlay"></div><!-- .item-grid__image-overlay -->
-					<img  v-bind:data-page="'property'" v-bind:src="item.thumbnail" v-bind:alt="item.title" class="listing__img page-link">
+					<img  v-bind:data-page="'property'" v-bind:src="item.propertyBasicField.thumbnail" v-bind:alt="item.propertyBasicField.title" class="listing__img page-link">
 					<span class="item__label">For Sale</span>
 					<span class="listing__favorite listing__favorite--v2"><i class="fa fa-heart-o" aria-hidden="true"></i></span>
 				  </a>
@@ -972,16 +980,16 @@
 					<div class="listing__header">
 					  <div class="listing__header-primary">
 						<span class="listing__type">Villa</span>
-						<h3 class="listing__title"><a href="#">{{item.title}}</a></h3>
-						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon page-link" v-bind:data-page="'property'"></span>{{item.address}}</p>
+						<h3 class="listing__title page-link"  v-bind:data-page="'property'"><a v-on:click="redirectPropertyRoot(item.id)" href="#">{{item.propertyBasicField.title}}</a></h3>
+						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{item.propertyBasicField.address}}</p>
 					  </div><!-- .listing__header-primary -->
-					  <p class="listing__price">\${{item.listingPrice}}</p>
+					  <p class="listing__price">\${{item.propertyBasicField.listingPrice}}</p>
 					</div><!-- .listing__header -->
 					<div class="listing__details">
 					  <ul class="listing__stats">
-							<li><span class="listing__figure">{{item.numBed}}</span> BEDS</li>
-							<li><span class="listing__figure">{{item.numBath}}</span> BATHS</li>
-							<li><span class="listing__figure">{{item.squareFeet}}</span> SQ. FT</li>
+							<li><span class="listing__figure">{{item.propertyBasicField.numBed}}</span> BEDS</li>
+							<li><span class="listing__figure">{{item.propertyBasicField.numBath}}</span> BATHS</li>
+							<li><span class="listing__figure">{{item.propertyBasicField.squareFeet}}</span> SQ. FT</li>
 					  </ul><!-- .listing__stats -->
 					  <div  class="page-link" v-bind:data-page="'property'">
 					  <a href="#" class="listing__btn">Details <span class="listing__btn-icon"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
@@ -1005,7 +1013,7 @@
 		
 				<p class="listing-sort__sort">
 				<label for="sort-type" class="listing-sort__label"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> {{sort.title}} </label>
-				<select name="sort-type" id="sort-type" class="ht-field listing-sort__field">
+				<select name="sort-type" id="sort-type" class="ht-field listing-sort__field" v-model="sort.selected" v-on:change="sortList">
 					<option v-for="item in sort.types" v-bind:value="item.value">{{item.label}}</option>
 				</select>
 				</p><!-- .listing-sort__sort -->

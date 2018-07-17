@@ -1,5 +1,6 @@
 $.support.cors = true;
 
+
 const eventbus = new Vue({
     data : {
         eventbuss :"myfuckingeventbussssss"
@@ -993,9 +994,175 @@ Vue.component('realand-menu-simple',{
     template : '#realand-menu-simple-template'
 });
 
+Vue.component('realand-property-root',{
+    data:function(){
+        return {
+            loadPropertyUrl : "http://localhost:8080/api/property/",
+            property : {}
+        }
+    },
+    created : function(){
+        var self = this;
+        eventbus.$on('loadPropertyRoot', this.loadPropertyRoot)
+    },
+    methods : {
+        loadPropertyRoot : function(data){
+            var self = this;
+            var propertyid = data;
+            var url = self.loadPropertyUrl + propertyid;
+            
+            $.ajax({
+                url : url,
+                dataType:"json",
+                success : function(response){
+                    self.property = response;
+                    //console.log(JSON.stringify(response));
+                    //eventbus.$emit('loadPropertySlider', self.property.images);
+                    window.loadPropertySlider(self.property.images);
+                    eventbus.$emit('loadPropertyHeader', self.property.propertyBasicField)
+                    eventbus.$emit('loadPropertyDetails', self.property.propertyBasicField);
+                    eventbus.$emit('loadPropertyDescription', self.property.propertyBasicField.description);
+                }
+            }); 
+        }
+    },
+
+    template : '#realand-property-root-template'
+
+});
+
+function loadPropertySlider(images){
+    $('#propertySlider').remove();
+    var propertySlider = Vue.extend({
+        props : ['sliders'],
+        template : '#realand-property-slider-template'
+    });
+    var sliderMount = document.createElement('div');
+    $('#propertySliderContainer').append(sliderMount);
+
+    var sliderInstance = new propertySlider({
+        propsData : {
+            sliders : images
+        }
+    }).$mount(sliderMount);
+
+    renderSliderBySlick();
+}
+
+
+function renderSliderBySlick(){
+    
+  $(".property__slider-nav--vertical").slick({
+    vertical: true,
+    verticalSwiping: true,
+    slidesToShow: 8,
+    slidesToScroll: 1,
+    focusOnSelect: true,
+    autoplay: false,
+    infinite: false,
+    prevArrow: '<span class="ion-ios-arrow-up slick-vertical-arrow slick-vertical-prev-arrow"></span>',
+    nextArrow: '<span class="ion-ios-arrow-down slick-vertical-arrow slick-vertical-next-arrow"></span>',
+    asNavFor: '.property__slider-images',
+    responsive: [
+      {
+        breakpoint: 1199,
+        settings: {
+          prevArrow: '<span class="ion-ios-arrow-left slick-horizontal-arrow slick-horizontal-prev-arrow"></span>',
+          nextArrow: '<span class="ion-ios-arrow-right slick-horizontal-arrow slick-horizontal-next-arrow"></span>',
+          vertical: false,
+          verticalSwiping: false,
+          slidesToShow: 6,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          prevArrow: '<span class="ion-ios-arrow-left slick-horizontal-arrow slick-horizontal-prev-arrow"></span>',
+          nextArrow: '<span class="ion-ios-arrow-right slick-horizontal-arrow slick-horizontal-next-arrow"></span>',
+          vertical: false,
+          verticalSwiping: false,
+          slidesToShow: 4,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 479,
+        settings: {
+          prevArrow: '<span class="ion-ios-arrow-left slick-horizontal-arrow slick-horizontal-prev-arrow"></span>',
+          nextArrow: '<span class="ion-ios-arrow-right slick-horizontal-arrow slick-horizontal-next-arrow"></span>',
+          vertical: false,
+          verticalSwiping: false,
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+    ]
+  });
+
+  $(".property__slider-nav--horizontal").slick({
+    slidesToShow: 8,
+    slidesToScroll: 1,
+    focusOnSelect: true,
+    autoplay: false,
+    infinite: false,
+    prevArrow: '<span class="ion-ios-arrow-left slick-horizontal-arrow slick-horizontal-prev-arrow"></span>',
+    nextArrow: '<span class="ion-ios-arrow-right slick-horizontal-arrow slick-horizontal-next-arrow"></span>',
+    asNavFor: '.property__slider-images',
+    responsive: [
+      {
+        breakpoint: 1199,
+        settings: {
+          slidesToShow: 6,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 1
+        }
+      },
+      {
+        breakpoint: 479,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1
+        }
+      },
+    ]
+  });
+
+  $(".property__slider-images").on('init reInit afterChange', function (event, slick, currentSlide, nextSlide) {
+    var i = (currentSlide ? currentSlide : 0) + 1;
+    $(".sliderInfo").text(i + "/" + slick.slideCount + " Photos");
+  });
+
+  $(".image-navigation__prev").on('click', function () {
+    $(".property__slider-images").slick('slickPrev');
+  });
+
+  $(".image-navigation__next").on('click', function () {
+    $(".property__slider-images").slick('slickNext');
+  });
+
+  $(".property__slider-images").slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: false,
+    infinite: false,
+    arrows: false,
+    fade: true,
+    asNavFor: '.property__slider-nav',
+  });
+}
+
+
 Vue.component('realand-property-header',{
     data : function(){
         return {
+            property:{},
             propertyHeader : {  
                 tags : [
                     {tag : "FOR SALES"},
@@ -1026,97 +1193,77 @@ Vue.component('realand-property-header',{
             }
         }
     },
+    created : function(){
+        eventbus.$on('loadPropertyHeader', this.loadPropertyHeader);
+    },
+
+    methods : {
+        loadPropertyHeader : function(data){
+            this.property = data;
+        }
+    },
     template :'#realand-property-header-template'
 });
 
+/*
 Vue.component('realand-property-slider',{
     data : function(){
         return { 
             sliders : [
                 {
-                    src : "images/uploads/property_slider_1.jpeg",
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_1",
                     alt : "Image 1"
                 },
                 {
-                    src : "images/uploads/property_slider_2.jpeg",
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_2",
                     alt : "Image 2"
+                }
+            ]
+            
+        }
+    },
+    created : function(){
+        eventbus.$on('loadPropertySlider', this.loadPropertySlider);
+    },
+    methods : {
+        loadPropertySlider : function(data){
+            //this.sliders = data;
+            this.sliders = [
+                {
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_6.jpeg",
+                    alt : "Image 1"
                 },
                 {
-                    src : "images/uploads/property_slider_3.jpeg",
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_3.jpeg",
                     alt : "Image 3"
                 },
                 {
-                    src : "images/uploads/property_slider_4.jpeg",
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_4.jpeg",
                     alt : "Image 4"
                 },
                 {
-                    src : "images/uploads/property_slider_5.jpeg",
+                    src : "https://s3.ca-central-1.amazonaws.com/charliehe/property_slider_5.jpeg",
                     alt : "Image 5"
-                },
-                {
-                    src : "images/uploads/property_slider_6.jpeg",
-                    alt : "Image 6"
-                },
-                {
-                    src : "images/uploads/property_slider_7.jpeg",
-                    alt : "Image 7"
-                },
-                {
-                    src : "images/uploads/property_slider_8.jpeg",
-                    alt : "Image 8"
-                },
-                {
-                    src : "images/uploads/property_slider_9.jpeg",
-                    alt : "Image 9"
-                },
-                {
-                    src : "images/uploads/property_slider_10.jpeg",
-                    alt : "Image 10"
                 }
 
-            ] 
+            ]; 
         }
     },
     template : '#realand-property-slider-template'
 });
-
+*/
 Vue.component('realand-property-details',{
     data : function(){
         return {
-            details : [
-                {
-                    label : "Type",
-                    value : "Flat, Low-Rise (1-3)"
-                },
-                {
-                    label : "Year Build",
-                    value : "1890"
-                },
-                {
-                    label : "Square Footage",
-                    value : "1752"
-                },
-                {
-                    label : "Property Subtype",
-                    value : "Condominium"
-                },
-                {
-                    label : "Property Type",
-                    value : "Condo/Coop/TIC/Loft"
-                },
-                {
-                    label : "HOA Dues",
-                    value : "375 HOA"
-                },
-                {
-                    label : "Fee Includes:",
-                    value : "Water, Electricity, Garbage, Ext Bldg Maintainance, Security Service, Homeowners Insurance"
-                },
-                {
-                    label : "HOA",
-                    value : "Yes"
-                }
-            ]
+           basicDetails : {}
+        }
+    },
+    created : function(){
+        eventbus.$on('loadPropertyDetails', this.loadPropertyDetails);
+    },
+    methods : {
+        loadPropertyDetails : function(data){
+            this.basicDetails = data;
         }
     },
     template : '#realand-property-details-template'
@@ -1444,8 +1591,15 @@ Vue.component('realand-property-similar',{
 Vue.component('realand-property-description',{
     data : function(){
         return {
-            title : "Property Description",
-            content : "Spacious and grand, 3 bedroom, 2 bath (one en-suite) condo boasts 1,752 Sq Ft. Middle unit of a beautiful three-unit 1890's Victorian designed by William Armitage. Period details: high ceilings, ornate moldings, 2 fireplaces, stained glass, beveled glass transoms, hardwood floors. Spacious dining room, remodeled kitchen and wonderful deeded walk-out deck. Convenient in-unit laundry room, deeded parking & storage space."
+            description : ""
+        }
+    },
+    created : function(){
+        eventbus.$on('loadPropertyDescription', this.loadPropertyDescription)
+    },
+    methods : {
+        loadPropertyDescription : function(data){
+            this.description = data;
         }
     },
     template : '#realand-property-description-template'
@@ -1481,18 +1635,72 @@ Vue.component('realand-list-list',{
     props : ['properties'],
     data : function(){
         return {
-            lala : "babababa"
+           filteredProperties : this.properties,
+           
         }
     },
 
     created : function(){
-        eventbus.$on('customevent',this.testabc);
+        this.filteredProperties = this.properties.slice();
+        eventbus.$on('sortPropertyList', this.sortList);
+        
     },
 
     methods : {
-        testabc : function(event){
-            console.log(event)
-            this.properties[0].alt = event;
+        sortList : function(key){
+            this.filteredProperties = this.properties.slice();
+            if(key=='l'){
+                this.lowToHigh();
+            }else if(key=='h'){
+                this.highToLow();
+            }else if(key=='f'){
+                this.featured();
+            }else{
+                this.default();
+            }
+        },
+
+        default : function(){
+            this.filteredProperties = this.properties.slice();
+        },
+
+        lowToHigh : function(){
+            var compare = function(a, b){
+                if(a.propertyBasicField.listingPrice < b.propertyBasicField.listingPrice){
+                    return -1;
+                }else if(a.propertyBasicField.listingPrice > b.propertyBasicField.listingPrice){
+                    return 1;
+                }
+            }
+            this.filteredProperties.length = 0;
+            this.filteredProperties = this.properties.slice();
+            this.filteredProperties.sort(compare);
+        },
+
+
+        highToLow : function(){
+            var compare = function(a, b){
+                if(a.propertyBasicField.listingPrice > b.propertyBasicField.listingPrice){
+                    return -1;
+                }else if(a.propertyBasicField.listingPrice < b.propertyBasicField.listingPrice){
+                    return 1;
+                }
+            }
+            this.filteredProperties.length = 0;
+            this.filteredProperties = this.properties.slice();
+            this.filteredProperties.sort(compare);
+        },
+
+        featured : function(){
+           this.filteredProperties = this.properties.filter(function(item){
+                return item.propertyBasicField.featured;
+            });
+        },
+
+
+
+        redirectPropertyRoot : function(propertyid){
+            eventbus.$emit('loadPropertyRoot', propertyid);
         }
     },
 
@@ -1506,6 +1714,7 @@ Vue.component('realand-list-sort',{
       return  {
           sort : {
           title : "Sort by",
+          selected : "",
           types : [
               {
                 value : "d",
@@ -1530,8 +1739,8 @@ Vue.component('realand-list-sort',{
     },
 
     methods : {
-        testme : function(event){
-            this.properties[0].alt = "Muahahahahaha";
+        sortList : function(){
+            eventbus.$emit('sortPropertyList', this.sort.selected);
         }
     },
     template : '#realand-list-sort-template'
@@ -1608,7 +1817,6 @@ Vue.component('realand-realtor-detail', {
     },
     methods : {
         test3 : function(data){
-            console.log(data)
             this.realtor = data;
         }
         
@@ -1645,64 +1853,63 @@ var test = new Vue({
     el:"#app"
 });
 
-$(".page-link").click(function(event){
-    event.preventDefault();
-    console.log(this.dataset.page);
-    var pagename = this.dataset.page + '-page';
-    $('.page').hide();
-    $('.'+pagename).show();
 
-    pageFunctions[this.dataset.page]();
-});
-
-const pageFunctions = [];
-
-function registerPage(name, pageFunction){
-    pageFunctions[name] = pageFunction;
-}
-
-function home(){
-    $('.page').hide();
-    $('.home-page').show();
-}
-
-function propertyList(){
-    alert("propertyList page function called!");
-}
-
-function property(){
-    alert("property page function called!");
-}
-
-function realtorDetail(){
-    var url = "http://localhost:8080/api/realtor/1"
-    var obj = {}
-    //var result = ajaxCall(url ,obj);
-    $.ajax({
-        url : url,
-        success : function(data){
-            eventbus.$emit('loadRealtor',data);
-        }
+    $(document).on('click', '.page-link', function(event){
+        //event.preventDefault();
+        var pagename = this.dataset.page + '-page';
+        $('.page').hide();
+        $('.'+pagename).show();
+        pageFunctions[this.dataset.page]();
     })
 
+    const pageFunctions = [];
 
-    //eventbus.$emit('loadRealtor',{abc:"COOOMMMON MANNNNN!"});
+    function registerPage(name, pageFunction){
+        pageFunctions[name] = pageFunction;
+    }
     
-}
+    function home(){
+        $('.page').hide();
+        $('.home-page').show();
+    }
+    
+    function propertyList(){
+    }
+    
+    function property(id){
+    }
+    
+    function realtorDetail(){
+        var url = "http://localhost:8080/api/realtor/1"
+        var obj = {}
+        //var result = ajaxCall(url ,obj);
+        $.ajax({
+            url : url,
+            success : function(data){
+                eventbus.$emit('loadRealtor',data);
+            }
+        })
+    
+    
+        //eventbus.$emit('loadRealtor',{abc:"COOOMMMON MANNNNN!"});
+        
+    }
+    
+    function contactUs(){
+    }
+    
+    
+    
+    
+    
+    registerPage("home", home);
+    registerPage("propertyList", propertyList);
+    registerPage("property", property);
+    registerPage("realtorDetail", realtorDetail);
+    registerPage("contactUs", contactUs);
+    
+    home();
 
-function contactUs(){
-    alert("contact us page has been called!!!");
-}
 
 
-
-
-
-registerPage("home", home);
-registerPage("propertyList", propertyList);
-registerPage("property", property);
-registerPage("realtorDetail", realtorDetail);
-registerPage("contactUs", contactUs);
-
-home();
 
