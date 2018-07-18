@@ -47,7 +47,7 @@
 <script type="text/x-template" id="realand-root-template">
 <div>
 <!-- Start of Home page -->
-	<section class="page home-page">
+<section class="page home-page">
 		<realand-menu></realand-menu>
 		<realand-main-slider></realand-main-slider>
 	
@@ -64,7 +64,7 @@
 		<realand-testimonial></realand-testimonial>
 		<realand-partners></realand-partners>
 		<realand-news></realand-news>
-	</section>	
+</section>	
 	<!-- End of home page -->
 	
 	<!-- start of property detail page -->
@@ -86,6 +86,13 @@
 		<realand-realtor-detail></realand-realtor-detail>
 	</section>
 	<!-- End of realtor detail page -->
+
+	<!-- Beginning of realtor list page -->
+	<section class="page realtorList-page">
+			<realand-menu-simple></realand-menu-simple>
+			<realand-realtor-list></realand-realtor-list>
+	</section>
+	<!-- End of realtor list page -->
 
 	<!-- Beginning of contact us page -->
 	<section class="page contactUs-page">
@@ -1051,6 +1058,48 @@
 			</div><!-- .container -->
 			</div><!-- .main-listing__main -->
 </script>
+<script type="text/x-template" id="realand-realtor-list-template">
+	<section class="agents-with-info">
+			<div class="container">
+				<ul class="ht-breadcrumbs ht-breadcrumbs--y-padding ht-breadcrumbs--b-border ht-breadcrumbs--b-margin">
+					<li class="ht-breadcrumbs__item"><a href="index.html" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Home</span></a></li>
+					<li class="ht-breadcrumbs__item"><a href="agents.html" class="ht-breadcrumbs__link"><span class="ht-breadcrumbs__title">Agent</span></a></li>
+					<li class="ht-breadcrumbs__item"><span class="ht-breadcrumbs__page">Agent List Style</span></li>
+				</ul><!-- ht-breadcrumb -->
+		
+				<h2 class="section__title">Agents with Info</h2>
+
+				<div class="row">
+						<div v-for="item in realtors" class="col-lg-3 col-sm-6">
+							<div class="famous-agents__single">
+								<div class="famous-agents__header">
+									<img v-bind:src="item.image" v-bind:alt="item.firstName+' '+item.lastName">
+									<ul class="famous-agents__social">
+										<li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i>
+										</a></li>
+										<li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i>
+										</a></li>
+										<li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i>
+										</a></li>
+										<li><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i>
+										</a></li>
+									</ul><!-- .famous_agents__social -->
+								</div><!-- .famous-agents__header -->
+								<div class="famous-agents__content">
+									<h4 class="famous-agents__name page-link" data-page="realtorDetail"><a href="#" v-on:click="loadRealtorDetail(item)">{{item.fristName}} {{item.lastName}}</a></h4>
+									<span class="famous-agents__position">{{item.title}} | Realand&reg;</span>
+									<ul class="famous-agents__contact">
+										<li class="famous-agents__phone"><i class="fa fa-phone fa-fw" aria-hidden="true"></i><a href="tel:+3104326507">{{item.officePhone}}</a></li>
+										<li class="famous-agents__email"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i><a v-bind:href="'mailto:'+item.email">{{item.email}}</a></li>
+									</ul><!-- .famous-agents__contact -->
+								</div><!-- .famous-agents__content -->
+							</div><!-- .famous-agents__single -->
+						</div><!-- .col -->
+					</div><!-- .row -->
+			</div><!-- .container -->
+		</section><!-- agents-with-info -->
+
+</script>
 <script type="text/x-template" id="realand-realtor-detail-template">
 	<div>
 			<section class="single agents-single">
@@ -1066,7 +1115,7 @@
 					<div class="col-md-9">
 					<div class="single__inner agents-single__inner">
 						<div class="single__avatar agents-single__avatar">
-						<img src="images/uploads/michael_beckle.jpg" alt="Michael Beckle">
+						<img v-bind:src="realtor.avatar" alt="Michael Beckle">
 						</div><!-- .agents-single__avatar -->
 		
 						<div class="single__detail agents-single__detail">
@@ -1131,24 +1180,19 @@
 			<h2 class="contact__title">Contact Us</h2>
 			<div class="contact__desc">
 				
+				{{contactInfo.description}}
 
-				<p>{{contactInfo.email}}</p>
-				<p>{{contactInfo.phone}}</p>
-				<p>{{contactInfo.address}}</p>
-				<p>{{contactInfo.website}}</p>
-				<p>{{contactInfo.fax}}</p>
-				<p>{{contactInfo.contactDescription}}</p>
 				
 				
 			</div>
-			<!--
+
 			<ul class="agency__contact">
-				<li class="agency__contact-phone"><a href="tel:+3104326507">{{contactInfo.phone}}</a></li>
-				<li class="agency__contact-website"><a href="#">{{contactInfo.website}}</a></li>
-				<li class="agency__contact-email"><a href="mailto:CitiState@domain.com">{{contactInfo.email}}</a></li>
+				<li class="agency__contact-phone"><a v-bind:href="'tel:+'+contactInfo.phone">{{contactInfo.phone}}</a></li>
+				<li class="agency__contact-website"><a v-bind:href="contactInfo.website">{{contactInfo.website}}</a></li>
+				<li class="agency__contact-email"><a href="'mailto:'+contactInfo.email">{{contactInfo.email}}</a></li>
 				<li class="agency__contact-address">{{contactInfo.address}}</li>
 			</ul>
-			-->
+
 			</div><!-- .col -->
 			<div class="col-md-6">
 			<h2 class="contact__title">Send Us a Message</h2>

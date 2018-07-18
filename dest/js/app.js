@@ -27,6 +27,7 @@ Vue.component('realand-root',{
                 self.loadPropertySummary();
                 self.loadFeatureListing();
                 self.loadListRoot();
+                self.loadRealtorList();
                 
                 
             }
@@ -44,13 +45,16 @@ Vue.component('realand-root',{
         loadFeatureListing : function(){
             var list = this.company.properties;
             var featurelist = list.filter( function(property){
-                return property.featured === true;
+                return property.propertyBasicField.featured === true;
             });
             eventbus.$emit("loadFeatureListing", featurelist);
         },
 
         loadListRoot : function(){
             eventbus.$emit("loadListRoot", this.company.properties);
+        },
+        loadRealtorList : function(){
+            eventbus.$emit('loadRealtorList', this.company.realtors);
         }
     },
     template : '#realand-root-template'
@@ -196,12 +200,12 @@ Vue.component('realand-menu',{
                                     label : "Contact"
                                 },
                                 {
-                                    link : "agents.html",
-                                    label : "Agent List"
+                                    link : "realtorList",
+                                    label : "Realtor List"
                                 },
                                 {
                                     link : "realtorDetail",
-                                    label : "Agent Single"
+                                    label : "Realtor Single"
                                 },
                                 {
                                     link : "coming_soon.html",
@@ -240,6 +244,167 @@ Vue.component('realand-menu',{
 
     template : '#realand-menu-template'
 });
+
+
+Vue.component('realand-menu-simple',{
+    data : function(){
+        return { 
+        header : {
+            brand : "Charlie's Compnay",
+            menu : {
+                list :[
+                    {
+                    link : "home",
+                    label : "Home",
+                    list : [
+                            {
+                                link : "home",
+                                label : "Home 1"
+                            },
+                            {
+                                link : "index_2.html",
+                                label : "Home 2"
+                            },
+                            {
+                                link : "index_3.html",
+                                label : "Home 3"
+                            },
+                            {
+                                link : "index_4.html",
+                                label : "Home 4"
+                            }
+                        ]
+                    },
+
+                    {
+                    link : "propertyList",
+                    label : "Listing",
+                    list : [
+                            {
+                                link : "propertyList",
+                                label : "Listing List 1"
+                                
+                            },
+                            {
+                                link : "listing_2.html",
+                                label : "Listing List 2"
+                            },
+                            {
+                                link : "listing_2.html",
+                                label : "Listing Grid"
+                            },
+                            {
+                                link : "listing_3.html",
+                                label : "Listing Full Map"
+                            },
+                            {
+                                link : "listing_4.html",
+                                label : "Listing Half Map"
+                            }
+                        ]
+                    },
+
+                    {
+                    link : "property",
+                    label : "Property",
+                    list : [
+                            {
+                                link : "property",
+                                label : "Single Property 1"
+                            },
+                            {
+                                link : "single_property_2.html",
+                                label : "Single Property 2"
+                            },
+                            {
+                                link : "single_property_3.html",
+                                label : "Single Property 3"
+                            }
+                        ]  
+                    },
+                    {
+                    link : "pages",
+                    label : "Pages",
+                    list : [
+                            {
+                                link : "myaccount",
+                                label : "My Account",
+                                list : [
+                                    {
+                                        link : "my_profile.html",
+                                        label : "My Profile"
+                                    },
+                                    {
+                                        link : "my_property.html",
+                                        label : "My Property"
+                                    },
+                                    {
+                                        link : "bookmarked_listing.html",
+                                        label : "Bookmarked Listing"
+                                    },
+                                    {
+                                        link : "bookmarked_listing.html",
+                                        label : "Bookmarked Listing"
+                                    },
+                                    {
+                                        link : "change_password.html",
+                                        label : "Change Password"
+                                    }  
+                                ]
+                            },
+                            {
+                                link : "about_us.html",
+                                label : "About Us"
+                            },
+                            {
+                                link : "contactUs",
+                                label : "Contact"
+                            },
+                            {
+                                link : "realtorList",
+                                label : "Realtor List"
+                            },
+                            {
+                                link : "realtorDetail",
+                                label : "Realtor Single"
+                            },
+                            {
+                                link : "coming_soon.html",
+                                label : "Coming Soon"
+                            },
+                            {
+                                link : "404.html",
+                                label : "404 Page"
+                            },
+                            {
+                                link : "package.html",
+                                label : "Packages"
+                            },
+                            {
+                                link : "sign_up.html",
+                                label : "Login/Signup"
+                            },
+                            {
+                                link : "test",
+                                label : "test"
+                            }
+                        ] 
+                    },
+                    {
+                        link : "blog.html",
+                        label : "Blog"
+                    }
+
+
+
+                ]
+            }
+        }
+        }
+    },
+    template : '#realand-menu-simple-template'
+});
+
 
 Vue.component('realand-main-search',{
     data : function(){
@@ -834,165 +999,6 @@ Vue.component('realand-testimonial',{
 
     template : '#realand-testimonial-template'
 })
-
-Vue.component('realand-menu-simple',{
-    data : function(){
-        return { 
-        header : {
-            brand : "Charlie's Compnay",
-            menu : {
-                list :[
-                    {
-                    link : "home",
-                    label : "Home",
-                    list : [
-                            {
-                                link : "home",
-                                label : "Home 1"
-                            },
-                            {
-                                link : "index_2.html",
-                                label : "Home 2"
-                            },
-                            {
-                                link : "index_3.html",
-                                label : "Home 3"
-                            },
-                            {
-                                link : "index_4.html",
-                                label : "Home 4"
-                            }
-                        ]
-                    },
-
-                    {
-                    link : "propertyList",
-                    label : "Listing",
-                    list : [
-                            {
-                                link : "propertyList",
-                                label : "Listing List 1"
-                                
-                            },
-                            {
-                                link : "listing_2.html",
-                                label : "Listing List 2"
-                            },
-                            {
-                                link : "listing_2.html",
-                                label : "Listing Grid"
-                            },
-                            {
-                                link : "listing_3.html",
-                                label : "Listing Full Map"
-                            },
-                            {
-                                link : "listing_4.html",
-                                label : "Listing Half Map"
-                            }
-                        ]
-                    },
-
-                    {
-                    link : "property",
-                    label : "Property",
-                    list : [
-                            {
-                                link : "property",
-                                label : "Single Property 1"
-                            },
-                            {
-                                link : "single_property_2.html",
-                                label : "Single Property 2"
-                            },
-                            {
-                                link : "single_property_3.html",
-                                label : "Single Property 3"
-                            }
-                        ]  
-                    },
-                    {
-                    link : "pages",
-                    label : "Pages",
-                    list : [
-                            {
-                                link : "myaccount",
-                                label : "My Account",
-                                list : [
-                                    {
-                                        link : "my_profile.html",
-                                        label : "My Profile"
-                                    },
-                                    {
-                                        link : "my_property.html",
-                                        label : "My Property"
-                                    },
-                                    {
-                                        link : "bookmarked_listing.html",
-                                        label : "Bookmarked Listing"
-                                    },
-                                    {
-                                        link : "bookmarked_listing.html",
-                                        label : "Bookmarked Listing"
-                                    },
-                                    {
-                                        link : "change_password.html",
-                                        label : "Change Password"
-                                    }  
-                                ]
-                            },
-                            {
-                                link : "about_us.html",
-                                label : "About Us"
-                            },
-                            {
-                                link : "contact",
-                                label : "Contact"
-                            },
-                            {
-                                link : "agents.html",
-                                label : "Agent List"
-                            },
-                            {
-                                link : "realtorDetail",
-                                label : "Agent Single"
-                            },
-                            {
-                                link : "coming_soon.html",
-                                label : "Coming Soon"
-                            },
-                            {
-                                link : "404.html",
-                                label : "404 Page"
-                            },
-                            {
-                                link : "package.html",
-                                label : "Packages"
-                            },
-                            {
-                                link : "sign_up.html",
-                                label : "Login/Signup"
-                            },
-                            {
-                                link : "test",
-                                label : "test"
-                            }
-                        ] 
-                    },
-                    {
-                        link : "blog.html",
-                        label : "Blog"
-                    }
-
-
-
-                ]
-            }
-        }
-        }
-    },
-    template : '#realand-menu-simple-template'
-});
 
 Vue.component('realand-property-root',{
     data:function(){
@@ -1632,36 +1638,33 @@ Vue.component('realand-property-openhouse',{
 })
 
 Vue.component('realand-list-list',{
-    props : ['properties'],
     data : function(){
         return {
-           filteredProperties : this.properties,
-           
+           defaultList:[],
+           filteredProperties : [],
+           lowToHighList : [],
+           highToLowList : [],
+           featuredList : [],
         }
     },
 
     created : function(){
-        this.filteredProperties = this.properties.slice();
-        eventbus.$on('sortPropertyList', this.sortList);
-        
+        eventbus.$on('loadListList', this.loadListList);
+        eventbus.$on('sortPropertyList', this.sortList); 
     },
 
     methods : {
         sortList : function(key){
-            this.filteredProperties = this.properties.slice();
+            
             if(key=='l'){
-                this.lowToHigh();
+                this.filteredProperties = this.lowToHighList;
             }else if(key=='h'){
-                this.highToLow();
+                this.filteredProperties = this.highToLowList;
             }else if(key=='f'){
-                this.featured();
+                this.filteredProperties = this.featuredList;
             }else{
-                this.default();
+                this.filteredProperties = this.defaultList;
             }
-        },
-
-        default : function(){
-            this.filteredProperties = this.properties.slice();
         },
 
         lowToHigh : function(){
@@ -1672,9 +1675,8 @@ Vue.component('realand-list-list',{
                     return 1;
                 }
             }
-            this.filteredProperties.length = 0;
-            this.filteredProperties = this.properties.slice();
-            this.filteredProperties.sort(compare);
+            this.lowToHighList = this.defaultList.slice();
+            this.lowToHighList.sort(compare);
         },
 
 
@@ -1686,17 +1688,23 @@ Vue.component('realand-list-list',{
                     return 1;
                 }
             }
-            this.filteredProperties.length = 0;
-            this.filteredProperties = this.properties.slice();
-            this.filteredProperties.sort(compare);
+            this.highToLowList = this.defaultList.slice();
+            this.highToLowList.sort(compare);
         },
 
         featured : function(){
-           this.filteredProperties = this.properties.filter(function(item){
+           this.featuredList = this.defaultList.filter(function(item){
                 return item.propertyBasicField.featured;
             });
         },
 
+        loadListList : function(data){
+            this.defaultList = data;
+            this.filteredProperties = this.defaultList;
+            this.lowToHigh();
+            this.highToLow();
+            this.featured();
+        },
 
 
         redirectPropertyRoot : function(propertyid){
@@ -1799,6 +1807,7 @@ Vue.component('realand-list-root',{
     methods : {
         loadListRoot:function(data){
             this.properties = data;
+            eventbus.$emit("loadListList", data);
         }
     },
 
@@ -1806,23 +1815,45 @@ Vue.component('realand-list-root',{
 
 })
 
-Vue.component('realand-realtor-detail', {
+
+Vue.component('realand-realtor-list',{
     data : function(){
         return {
-            realtor : "Here WE ARE MAN@@"
+            realtors : []
         }
     },
     created : function(){
-        eventbus.$on('loadRealtor', this.test3);
+        eventbus.$on('loadRealtorList', this.loadRealtorList);
     },
     methods : {
-        test3 : function(data){
+        loadRealtorList : function(data){
+            this.realtors = data;
+        },
+        loadRealtorDetail : function(data){
+            eventbus.$emit('loadRealtorDetail', data);
+        }
+    },
+    template : '#realand-realtor-list-template'
+})
+
+Vue.component('realand-realtor-detail', {
+    data : function(){
+        return {
+            realtor : {}
+        }
+    },
+    created : function(){
+        eventbus.$on('loadRealtorDetail', this.loadRealtorDetail);
+    },
+    methods : {
+       loadRealtorDetail : function(data){
             this.realtor = data;
         }
         
     },
     template : '#realand-realtor-detail-template'
 })
+
 
 Vue.component('realand-contact-us',{
     data : function(){
@@ -1841,6 +1872,7 @@ Vue.component('realand-contact-us',{
     },
     template : '#realand-contact-us-template'
 })
+
 
 
 
@@ -1876,23 +1908,13 @@ var test = new Vue({
     function propertyList(){
     }
     
-    function property(id){
+    function property(){
+    }
+
+    function realtorList(){
     }
     
     function realtorDetail(){
-        var url = "http://localhost:8080/api/realtor/1"
-        var obj = {}
-        //var result = ajaxCall(url ,obj);
-        $.ajax({
-            url : url,
-            success : function(data){
-                eventbus.$emit('loadRealtor',data);
-            }
-        })
-    
-    
-        //eventbus.$emit('loadRealtor',{abc:"COOOMMMON MANNNNN!"});
-        
     }
     
     function contactUs(){
@@ -1905,6 +1927,7 @@ var test = new Vue({
     registerPage("home", home);
     registerPage("propertyList", propertyList);
     registerPage("property", property);
+    registerPage("realtorList", realtorList);
     registerPage("realtorDetail", realtorDetail);
     registerPage("contactUs", contactUs);
     
