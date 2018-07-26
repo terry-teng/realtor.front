@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- Basic need -->
+	<title>ReaLand</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="ReaLand - Real Estate HTML Template">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<link rel="profile" href="">
+	<!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
+    integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+	<!-- Mobile specific meta -->
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="format-detection" content="telephone-no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	
+</head>
+
+<body>
+
+<div id="app">
+    <admin-realtor-root></admin-realtor-root>
+</div>    
+
+<script type="text/x-template" id="admin-realtor-root-template">
+    <div class="container">    
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#company">Company</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#profile">Realtor Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#property">Properties</a>
+                </li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="company"> Home HOME HOEM</div>
+                    <div class="tab-pane fade" id="profile">PROififififle PRopfile </div>
+                    <div class="tab-pane fade" id="property">
+
+                    </div>
+                </div>  
+            </div>  
+        </div>
+    </div>          
+</script>
+
+
+
+<!-- JS Files -->
+<script src="js/admin.js"></script>
+
+</body>
+
+</html>

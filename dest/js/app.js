@@ -1,5 +1,6 @@
 $.support.cors = true;
-
+//var contextUrl = "http://ec2-35-183-15-243.ca-central-1.compute.amazonaws.com:8080";
+var contextUrl = "http://localhost:8080";
 
 const eventbus = new Vue({
     data : {
@@ -10,7 +11,8 @@ const eventbus = new Vue({
 Vue.component('realand-root',{
     data : function(){
         return {
-            loadCompanyUrl : "http://localhost:8080/api/company/1",
+            loadCompanyUrl : contextUrl+"/api/company/",
+            compID : null,
             company : { 
             }
         }
@@ -18,8 +20,9 @@ Vue.component('realand-root',{
     created : function(){
         var self  = this;
         //initial load company, realtors, and property list info from backend
+        var compId = window.GetQueryStringParams("id");
         $.ajax({
-            url : this.loadCompanyUrl,
+            url : this.loadCompanyUrl+compId,
             dataType:"json",
             success : function(response){
                 self.company = response;
@@ -27,9 +30,7 @@ Vue.component('realand-root',{
                 self.loadPropertySummary();
                 self.loadFeatureListing();
                 self.loadListRoot();
-                self.loadRealtorList();
-                
-                
+                self.loadRealtorList(); 
             }
         }); 
     },
@@ -1003,7 +1004,7 @@ Vue.component('realand-testimonial',{
 Vue.component('realand-property-root',{
     data:function(){
         return {
-            loadPropertyUrl : "http://localhost:8080/api/property/",
+            loadPropertyUrl : contextUrl + "/api/property/",
             property : {}
         }
     },
@@ -1886,6 +1887,8 @@ var test = new Vue({
 });
 
 
+    
+
     $(document).on('click', '.page-link', function(event){
         //event.preventDefault();
         var pagename = this.dataset.page + '-page';
@@ -1919,11 +1922,18 @@ var test = new Vue({
     
     function contactUs(){
     }
-    
-    
-    
-    
-    
+
+    function GetQueryStringParams(sParam){
+        var sPageUrl = window.location.search.substring(1);
+        var sUrlVariables = sPageUrl.split('&');
+        for(var i=0; i<sUrlVariables.length; i++){
+            var sParameterName=sUrlVariables[i].split('=');
+            if(sParameterName[0]==sParam){
+                return sParameterName[1];
+            }
+        }
+    }
+
     registerPage("home", home);
     registerPage("propertyList", propertyList);
     registerPage("property", property);
