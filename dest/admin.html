@@ -62,15 +62,18 @@
 </script>
 
 <script type="text/x-template" id="admin-realtor-property-list-template">
-    <div class="container">
-        <ul class="list-group list-group-flush" >
-            <li class="list-group-item list-group-action list-link">1111111111111111111</li>
-            <admin-realtor-property-detail></admin-realtor-property-detail>
-            <li class="list-group-item list-group-action list-link">2222222222222222222</li>
-            <div class="item-detail">222222 CONTENT 222222222222</div>
-            <li class="list-group-item list-group-action list-link">3333333333333333333</li>
-            <div class="item-detail">333333 CONTENT 333333333333</div>
-        </ul>
+    <div class="container property-list">
+        <div class="list-group list-group-flush" >
+            <div v-for="item in properties" >
+                <div class="list-group-item list-group-action list-item-link">
+                    <div class="row">
+                        <div class="col-md-6 text-left">{{item.id}}</div>
+                        <div class="col-md-6 text-right"><a href="#" class="list-item-form-link">Edit</a> <a href="#">Delete</a></div>
+                    </div>
+                </div>
+                <admin-realtor-property-detail v-bind:detail="item"></admin-realtor-property-detail>
+            </div>    
+        </div>
     </div>
 </script>
 
@@ -78,10 +81,35 @@
 
 <script type="text/x-template" id="admin-realtor-property-detail-template">
     <div class="item-detail">
-            <input id="totalcost" type="text" readonly>adafdafasf</input>
+            <div class="list-item-display">
+                <div class="list-group">
+                    <div class="list-group-item">
+                        <div v-for="(value,key) in detail.propertyBasicField" class="row">
+                            <div class="col-md-3 text-right">{{key}} :</div>
+                            <div class="col-md-9 text-left">{{value}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="list-item-form-display">
+                <form action="http://ec2-35-183-15-243.ca-central-1.compute.amazonaws.com:8080/api/company/1">
+                    <div v-for="(value,key) in detail.propertyBasicField" class="form-group row">
+                        <label v-bind:for="key" class="col-md-3 text-right">{{key}}  :</label>
+                        <input type="text" class="form-control col-md-9" v-bind:id="key" v-bind:value="value"></input>
+                    </div>
+                </form>
+    
+            </div> 
     </div>
 </script>
 
+<script type="text/x-template" id="admin-realtor-company-list-template">
+
+</script>
+
+<script type="text/x-template" id="admin-realtor-profile-list-template">
+
+</script>
 
 
 <!-- JS Files -->
