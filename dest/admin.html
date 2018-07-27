@@ -46,10 +46,14 @@
             </div>
             <div class="card-body">
                 <div class="tab-content">
-                    <div class="tab-pane active" id="company"> Home HOME HOEM</div>
-                    <div class="tab-pane fade" id="profile">PROififififle PRopfile </div>
+                    <div class="tab-pane active" id="company"> 
+                        <admin-realtor-company-list></admin-realtor-company-list>
+                    </div>
+                    <div class="tab-pane fade" id="profile">
+                        <admin-realtor-profile-list></admin-realtor-profile-list>
+                    </div>
                     <div class="tab-pane fade" id="property">
-
+                        <admin-realtor-property-list></admin-realtor-property-list>
                     </div>
                 </div>  
             </div>  
@@ -57,10 +61,33 @@
     </div>          
 </script>
 
+<script type="text/x-template" id="admin-realtor-property-list-template">
+    <div class="container">
+        <ul class="list-group list-group-flush" >
+            <li class="list-group-item list-group-action list-link">1111111111111111111</li>
+            <admin-realtor-property-detail></admin-realtor-property-detail>
+            <li class="list-group-item list-group-action list-link">2222222222222222222</li>
+            <div class="item-detail">222222 CONTENT 222222222222</div>
+            <li class="list-group-item list-group-action list-link">3333333333333333333</li>
+            <div class="item-detail">333333 CONTENT 333333333333</div>
+        </ul>
+    </div>
+</script>
+
+
+
+<script type="text/x-template" id="admin-realtor-property-detail-template">
+    <div class="item-detail">
+            <input id="totalcost" type="text" readonly>adafdafasf</input>
+    </div>
+</script>
+
 
 
 <!-- JS Files -->
 <script src="js/admin.js"></script>
+    
+
 
 </body>
 
