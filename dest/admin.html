@@ -9,8 +9,9 @@
 	<meta name="author" content="">
 	<link rel="profile" href="">
 	<!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" 
-    integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/admin.css"> 
+    
 	<!-- Mobile specific meta -->
 	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -67,8 +68,11 @@
             <div v-for="item in properties" >
                 <div class="list-group-item list-group-action list-item-link">
                     <div class="row">
-                        <div class="col-md-6 text-left">{{item.id}}</div>
-                        <div class="col-md-6 text-right"><a href="#" class="list-item-form-link">Edit</a> <a href="#">Delete</a></div>
+                        <div class="col-md-6 text-left detail" v-bind:class="'list-item-'+item.id">{{item.id}}</div>
+                        <div class="col-md-6 text-right detail" v-bind:class="'list-item-'+item.id">
+                            <a href="#" v-bind:class="'list-item-'+item.id" class="edit">Edit</a>
+                            <a href="#" v-bind:class="'list-item-'+item.id" class="delete">Delete</a>
+                        </div>
                     </div>
                 </div>
                 <admin-realtor-property-detail v-bind:detail="item"></admin-realtor-property-detail>
@@ -81,7 +85,7 @@
 
 <script type="text/x-template" id="admin-realtor-property-detail-template">
     <div class="item-detail">
-            <div class="list-item-display">
+               <div  v-bind:class="'detail-list-item-'+detail.id">
                 <div class="list-group">
                     <div class="list-group-item">
                         <div v-for="(value,key) in detail.propertyBasicField" class="row">
@@ -91,14 +95,16 @@
                     </div>
                 </div>
             </div>
-            <div class="list-item-form-display">
-                <form action="http://ec2-35-183-15-243.ca-central-1.compute.amazonaws.com:8080/api/company/1">
+            <!--  ADD V-MODEL HERE!!!!-->
+            <div v-bind:class="'form-list-item-'+detail.id">
+                <form method="PUT" v-bind:action="'http://localhost:8080/api/property/'+detail.id">
                     <div v-for="(value,key) in detail.propertyBasicField" class="form-group row">
                         <label v-bind:for="key" class="col-md-3 text-right">{{key}}  :</label>
-                        <input type="text" class="form-control col-md-9" v-bind:id="key" v-bind:value="value"></input>
+                         <!-- Should I use bi-direction binding?-->
+                        <input type="text" v-model="detail.propertyBasicField[key]" class="form-control col-md-8" v-bind:id="key"></input> 
                     </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-    
             </div> 
     </div>
 </script>

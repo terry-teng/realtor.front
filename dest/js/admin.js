@@ -1,4 +1,5 @@
-var contextUrl = "http://ec2-35-183-15-243.ca-central-1.compute.amazonaws.com:8080";
+//var contextUrl = "http://ec2-35-183-15-243.ca-central-1.compute.amazonaws.com:8080";
+var contextUrl = "http://localhost:8080";
 var eventBus = new Vue();
 
 Vue.component("admin-realtor-root",{
@@ -48,8 +49,11 @@ Vue.component("admin-realtor-property-list",{
     created : function(){
         eventBus.$on("loadPropertyList", this.loadPropertyList);
     },
-    updated : function(){
+    mounted : function(){
         window.loadListener();
+    },
+    updated : function(){
+        window.hideAllContent(null, true, true);
     },
     methods : {
         loadPropertyList : function(data){
@@ -69,69 +73,75 @@ Vue.component("admin-realtor-company-list",{
 
 Vue.component("admin-realtor-property-detail",{
     props : ["detail"],
+    data : function(){
+        return {
+            url:contextUrl+"/api/property",
+        }
+    },
     template : "#admin-realtor-property-detail-template"
 })
 
 var admin = new Vue({el:"#app"})
 
 
-$(document).ready(loadListener());
+//$(document).ready(loadListener());
 
 
 
 function loadListener(){
-    hideAllContent($(".property-list"),true, true);
-    $(".list-group").on("click", function(e){
-        if($(e.target).hasClass("list-item-link")){
-            if($(e.target).hasClass("list-group-item-primary")){
-                $(e.target).removeClass("list-group-item-primary");
-                hideAllContent($(".property-list"),true, true);
-            }else{
-                $(e.target).addClass("list-group-item-primary");
-                hideAllContent($(".property-list"),true, true);
-                $(e.target).closest(".list-item-display").show();
-            }
-        }else if($(e.target).hasClass("list-item-form-link")){
-            hideAllContent($(".property-list"),true, true);
-            $(e.target).closest(".list-item-form-display").show();
+    
+    $(".list-group-flush").on("click", function(e){
+        
+        if($(e.target).attr("class")!=null){ // if statement to filter out the from tag
+            var className = $(e.target).attr("class").split(' ').find(function(name){
+                return (name.includes("list-item-"))
+            });
         }
-    })
-}
 
-function hideAllContent(el,detail,form){
-    //el.find(".")
-    if(detail){
-        $(".list-item-display").hide();
-    }
-    if(form){
-        $(".list-item-form-display").hide();
-    }
+        if($(e.target).hasClass("edit")){
+            removeClickedPrimary(null);
+            hideAllContent(null,true,true);
+            $(e.target.parentElement.parentElement.parentElement).addClass("list-group-item-primary");
+            $(".form-"+className).removeClass("hide");
+        }else if($(e.target).hasClass("delete")){
+
+
+        }else if($(e.target).hasClass("detail")){
+            /*
+            $(e.target.parentElement.parentElement).toggleClass("list-group-item-primary");
+            $(".detail-"+className).toggleClass("hide");
+            */
+            if( $(e.target.parentElement.parentElement).hasClass("list-group-item-primary")){
+                removeClickedPrimary(null);
+                hideAllContent(null,true,true);
+            }else{
+                removeClickedPrimary(null);
+                hideAllContent(null,true,true);
+                $(e.target.parentElement.parentElement).addClass("list-group-item-primary");
+                $(".detail-"+className).removeClass("hide");
+            }
+        }    
+        
+    })
+    
+   
+
     
 }
 
-/*
-function resetListener(){
-    $(".list-item-display").hide();
-    $(".list-item-form-display").hide();
-
-    $(".list-item-link").on("click", function(){
-        if($(this).hasClass("list-group-item-primary")){
-            $(this).removeClass("list-group-item-primary");
-            $(this).next().find(".list-item-display").hide();
-        }else{
-            $(".list-item-link").removeClass("list-group-item-primary");
-            $(this).addClass("list-group-item-primary");
-            $(".list-item-display").hide();
-            $(this).next().find(".list-item-display").show();
-        }
-    });
-
-    $(".list-item-form-link").on("click", function(){
-
-        $(this).closest(".list-item-link").addClass("list-group-item-secondary");
-    });
+function removeClickedPrimary(parent){
+    $(".list-group-item").removeClass("list-group-item-primary");
 }
-*/
+
+function hideAllContent(parent,detail,form){
+    if(detail){
+        $("div[class^='detail-list-item-']").addClass("hide");
+    }
+    if(form){
+        $("div[class^='form-list-item-']").addClass("hide");
+    }    
+}
+
 
 function GetQueryStringParams(sParam){
     var sPageUrl = window.location.search.substring(1);
