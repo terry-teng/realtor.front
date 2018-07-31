@@ -54,6 +54,7 @@ Vue.component("admin-realtor-property-list",{
     },
     updated : function(){
         window.hideAllContent(null, true, true);
+        window.xxxx()
     },
     methods : {
         loadPropertyList : function(data){
@@ -152,4 +153,54 @@ function GetQueryStringParams(sParam){
             return sParameterName[1];
         }
     }
+}
+
+function xxxx(){
+
+$("#test").submit(function(){
+    var tata = "lala";
+    var formObj = $(this);
+    var formURL = formObj.attr("action");
+    if(window.formData !== undefined){   // for HTML5 browers
+        var formData = new FormData(this);
+        $.ajax({
+            url: 'http://localhost:8080/api/storage/file/abcd',
+            type : 'POST',
+            data: formData,
+            mimeType : "multipart/form-data",
+            cache:false,
+            contentType:false,
+            processData:false,
+
+            success: function(data, textStatus, jqXHR)
+            {
+                    console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) 
+            {
+                    console.log(errorThrown);
+            }     
+
+            /*
+            xhr:function(){
+                var myXhr = $.ajaxSettings.xhr();
+                if(myXhr.upload) {
+                    myXhr.upload.addEventListener('progress',function(e){
+                        if(e.lengthComputable){
+                            $('progress').attr({
+                                value: e.loaded,
+                                max: e.total,
+                            });
+                        }
+                    },false);
+                }
+                return myXhr;
+            }*/
+        });
+        e.preventDefault() //??--- why?
+    }else{  // for old browsers
+        var old = "i am old browsers";
+    }    
+    
+});
 }

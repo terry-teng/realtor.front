@@ -97,13 +97,14 @@
             </div>
             <!--  ADD V-MODEL HERE!!!!-->
             <div v-bind:class="'form-list-item-'+detail.id">
-                <form method="PUT" v-bind:action="'http://localhost:8080/api/property/'+detail.id">
+                <form>
                     <div v-for="(value,key) in detail.propertyBasicField" class="form-group row">
                         <label v-bind:for="key" class="col-md-3 text-right">{{key}}  :</label>
                          <!-- Should I use bi-direction binding?-->
                         <input type="text" v-model="detail.propertyBasicField[key]" class="form-control col-md-8" v-bind:id="key"></input> 
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                   
                 </form>
             </div> 
     </div>
@@ -117,10 +118,17 @@
 
 </script>
 
+<form method="POST" action="http://localhost:8080/api/storage/file/abcd" id="test">
+        <div class="form-group row">
+            <label for="" class="col-md-3 text-right">Images : </label>
+            <input type="file" id="pic">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 
 <!-- JS Files -->
 <script src="js/admin.js"></script>
-    
 
 
 </body>
