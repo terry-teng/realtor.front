@@ -70,8 +70,8 @@
                     <div class="row">
                         <div class="col-md-6 text-left detail" v-bind:class="'list-item-'+item.id">{{item.id}}</div>
                         <div class="col-md-6 text-right detail" v-bind:class="'list-item-'+item.id">
-                            <a href="#" v-bind:class="'list-item-'+item.id" class="edit">Edit</a>
-                            <a href="#" v-bind:class="'list-item-'+item.id" class="delete">Delete</a>
+                            <a href="#" v-bind:class="'list-item-'+item.id" v-bind:data-property="item.id" class="edit">Edit</a>
+                            <a href="#" v-bind:class="'list-item-'+item.id" v-bind:data-property="item.id" class="delete">Remove</a>
                         </div>
                     </div>
                 </div>
@@ -97,13 +97,17 @@
             </div>
             <!--  ADD V-MODEL HERE!!!!-->
             <div v-bind:class="'form-list-item-'+detail.id">
-                <form>
+                <form method="PUT" enctype="multipart/form-data">
                     <div v-for="(value,key) in detail.propertyBasicField" class="form-group row">
                         <label v-bind:for="key" class="col-md-3 text-right">{{key}}  :</label>
                          <!-- Should I use bi-direction binding?-->
                         <input type="text" v-model="detail.propertyBasicField[key]" class="form-control col-md-8" v-bind:id="key"></input> 
                     </div>
 
+                    <div class="form-group row">
+                        <label for="" class="col-md-3 text-right">Images :</label>
+                        <input type="file" name="pics[]" multiple="" >
+                    </div>
                    
                 </form>
             </div> 
@@ -118,12 +122,16 @@
 
 </script>
 
-<form method="POST" action="http://localhost:8080/api/storage/file/abcd" id="test">
-        <div class="form-group row">
-            <label for="" class="col-md-3 text-right">Images : </label>
-            <input type="file" id="pic">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+<form method="POST" id="test" enctype="multipart/form-data">
+    <div class="form-group row">
+        <label for="" class="col-md-3 text-right">id </label>
+        <input type="text" name="tttte" value="try this man">
+    </div>    
+    <div class="form-group row">
+        <label for="" class="col-md-3 text-right">Images : </label>
+        <input type="file" name="mypic" id="pic">
+    </div>
+    <button type="submit" id="submitbutton" class="btn btn-primary">Submit</button>
 </form>
 
 

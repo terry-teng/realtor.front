@@ -48,6 +48,7 @@ Vue.component("admin-realtor-property-list",{
     },
     created : function(){
         eventBus.$on("loadPropertyList", this.loadPropertyList);
+        eventBus.$on('propertyRemoved',this.removeProperty);
     },
     mounted : function(){
         window.loadListener();
@@ -59,6 +60,11 @@ Vue.component("admin-realtor-property-list",{
     methods : {
         loadPropertyList : function(data){
             this.properties = data.properties;
+        },
+        removeProperty : function(data){
+            this.properties = this.properties.filter(function(el){
+                el.id != data;
+            })
         }
     },
     template : "#admin-realtor-property-list-template"
@@ -105,8 +111,11 @@ function loadListener(){
             $(e.target.parentElement.parentElement.parentElement).addClass("list-group-item-primary");
             $(".form-"+className).removeClass("hide");
         }else if($(e.target).hasClass("delete")){
-
-
+            if(confirm('some message?')){
+                removeProperty(e.target.dataset.property)
+            }else{
+                alert('clicked cancel!');
+            }
         }else if($(e.target).hasClass("detail")){
             /*
             $(e.target.parentElement.parentElement).toggleClass("list-group-item-primary");
@@ -155,52 +164,51 @@ function GetQueryStringParams(sParam){
     }
 }
 
+function removeProperty(id){
+    $.ajax({
+        url: 'http://localhost:8080/api/property/'+id,
+        type:'DELETE',
+        cache:false,
+        contentType:false,
+        processData:false,
+        success: function(result)
+        {
+            eventBus.$emit('propertyRemoved', id);
+            console.log(result);
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+            console.log(errorThrown);
+        }     
+    });
+}
+
 function xxxx(){
 
-$("#test").submit(function(){
-    var tata = "lala";
-    var formObj = $(this);
-    var formURL = formObj.attr("action");
-    if(window.formData !== undefined){   // for HTML5 browers
-        var formData = new FormData(this);
-        $.ajax({
-            url: 'http://localhost:8080/api/storage/file/abcd',
-            type : 'POST',
-            data: formData,
-            mimeType : "multipart/form-data",
-            cache:false,
-            contentType:false,
-            processData:false,
+$("#submitbutton").on("click",function(event){
+    event.preventDefault();
+    var testform = document.querySelector("#test");
+    var formData = new FormData(testform);
+    $.ajax({
+        url: 'http://localhost:8080/api/storage/test',
+        type : 'POST',
+        data: formData,
+        //mimeType : "multipart/form-data",
+        //enctype: 'multipart/form-data',
+        //contentType:'multipart/form-data;boundary=--terry teng boundary--',
+        cache:false,
+        contentType:false,
+        processData:false,
 
-            success: function(data, textStatus, jqXHR)
-            {
-                    console.log(data);
-            },
-            error: function(jqXHR, textStatus, errorThrown) 
-            {
-                    console.log(errorThrown);
-            }     
-
-            /*
-            xhr:function(){
-                var myXhr = $.ajaxSettings.xhr();
-                if(myXhr.upload) {
-                    myXhr.upload.addEventListener('progress',function(e){
-                        if(e.lengthComputable){
-                            $('progress').attr({
-                                value: e.loaded,
-                                max: e.total,
-                            });
-                        }
-                    },false);
-                }
-                return myXhr;
-            }*/
-        });
-        e.preventDefault() //??--- why?
-    }else{  // for old browsers
-        var old = "i am old browsers";
-    }    
+        success: function(data, textStatus, jqXHR)
+        {
+                console.log(data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+                console.log(errorThrown);
+        }     
+    });
     
 });
 }
