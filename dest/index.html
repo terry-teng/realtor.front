@@ -988,7 +988,7 @@
 					  <div class="listing__header-primary">
 						<span class="listing__type">Villa</span>
 						<h3 class="listing__title page-link"  v-bind:data-page="'property'"><a v-on:click="redirectPropertyRoot(item.id)" href="#">{{item.propertyBasicField.title}}</a></h3>
-						<p class="listing__location"><span class="ion-ios-location-outline listing__location-icon"></span>{{item.propertyBasicField.address}}</p>
+						<p class="listing__location page-link" v-bind:data-page="'property'"><a v-on:click="redirectPropertyRoot(item.id)" href="#"><span class="ion-ios-location-outline listing__location-icon"></span>{{item.propertyBasicField.address}}</a></p>
 					  </div><!-- .listing__header-primary -->
 					  <p class="listing__price">\${{item.propertyBasicField.listingPrice}}</p>
 					</div><!-- .listing__header -->
